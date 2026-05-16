@@ -9,7 +9,7 @@ export function Comparison() {
   return (
     <section className="section-shell bg-[var(--color-white)]">
       <div className="container-shell">
-        <Reveal className="mx-auto max-w-3xl text-center"><span className="kicker">PaseoCan vs competencia</span><h2 className="section-title mt-3">No es una correa común. Es una correa doble.</h2></Reveal>
+        <Reveal className="mx-auto max-w-3xl text-center"><span className="kicker">PaseoCan vs competencia</span><h2 className="section-title mt-3 text-[28px] leading-tight md:text-[48px]">No es una correa común. Es una correa doble.</h2></Reveal>
         <Reveal className="card-surface mt-8 overflow-hidden md:mt-10">
           <div className="grid grid-cols-[1fr_76px_104px] gap-2 bg-[var(--color-dark)] px-3 py-3 text-[11px] font-extrabold uppercase tracking-[0.08em] text-white md:grid-cols-[1.4fr_1fr_1fr] md:px-5 md:text-sm">
             <span>Característica</span><span className="text-center text-white/70">Común</span><span className="text-center rounded bg-[var(--color-primary)] px-2 py-1">PaseoCan</span>

@@ -43,7 +43,6 @@ body {
 
 h1, h2, h3, h4 {
   font-family: "Plus Jakarta Sans", "Inter", system-ui, sans-serif;
-  color: var(--color-dark);
   letter-spacing: -0.035em;
 }
 
@@ -61,7 +60,7 @@ img { max-width: 100%; }
 
 .section-shell { padding: 48px 16px; }
 .container-shell { width: 100%; max-width: 1200px; margin: 0 auto; }
-.section-title { font-size: var(--text-2xl); font-weight: 800; line-height: 1.08; color: var(--color-dark); }
+.section-title { font-size: var(--text-2xl); font-weight: 800; line-height: 1.12; color: var(--color-dark); }
 .section-subtitle { margin-top: 8px; font-size: var(--text-base); color: var(--color-muted); line-height: 1.6; }
 .kicker {
   display: inline-flex; align-items: center; gap: 6px; border-radius: 999px;
