@@ -2,8 +2,10 @@
   "name": "shadcn-ui-template",
   "private": true,
   "version": "0.0.1",
+  "packageManager": "pnpm@10.11.0",
   "type": "module",
   "scripts": {
+    "preinstall": "node -e \"if(!process.env.npm_config_user_agent?.startsWith('pnpm/')){console.error('Use pnpm instead of npm.');process.exit(1)}\"",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "typecheck": "tsc --noEmit",

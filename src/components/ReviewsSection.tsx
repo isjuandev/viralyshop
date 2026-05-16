@@ -2,44 +2,48 @@ import { Star, Quote } from "lucide-react"
 
 const reviews = [
   {
-    name: "María G.",
-    location: "Buenos Aires",
-    date: "Hace 3 días",
+    name: "Laura M.",
+    location: "Bogotá",
+    date: "Hace 2 días",
     rating: 5,
-    title: "Cambió completamente mis paseos",
-    text: "Tengo dos golden retrievers y antes los paseos eran un caos total. Con PawLux los llevo a los dos sin ningún enredo. El freno es increíble — reacciona al instante cuando uno quiere correr. Jamás vuelvo a comprar una correa barata.",
+    title: "Excelente relación calidad-precio",
+    text: "Muy práctico para dos perros, cuenta con un soporte para bolsas de excremento y una linterna. Increíble relación calidad-precio y calidad.",
     verified: true,
     product: "PawLux Doble — Negro",
+    image: "/reviews/image.png",
   },
   {
-    name: "Carlos R.",
+    name: "Diego R.",
     location: "Medellín",
     date: "Hace 1 semana",
     rating: 5,
-    title: "La mejor compra que hice para mi perro",
-    text: "Mi pastor alemán pesa 45kg y jalaba muchísimo. Con esta correa el control es total. El cable no se enreda nunca, el mango no me lastima y se nota que es de buena calidad. Vale cada centavo. Lo recomiendo 100%.",
+    title: "Producto muy ingenioso y práctico",
+    text: "Este producto es ingenioso, no lo conocía antes. Es uno de los más prácticos, ya que incluye una opción de bolsa, una linterna y dos topes para cables. Los cables tienen una longitud aproximada de dos metros y medio.",
     verified: true,
     product: "PawLux XL — Negro",
+    image: "/reviews/image copy.png",
   },
   {
-    name: "Ana P.",
-    location: "Ciudad de México",
-    date: "Hace 2 semanas",
+    name: "Carolina T.",
+    location: "Cali",
+    date: "Hace 6 días",
     rating: 5,
-    title: "Finalmente paseos relajados",
-    text: "Llevaba años luchando con correas baratas que se enredaban. Esta es completamente diferente. El sistema anti-enredos funciona de verdad. Mi perro y yo llegamos a casa relajados. El diseño también es muy elegante.",
+    title: "Resistente y recomendado",
+    text: "Me gusta, se siente resistente. Recomendado.",
     verified: true,
     product: "PawLux Standard — Negro",
+    image: "/reviews/image copy 2.png",
   },
   {
-    name: "Roberto M.",
-    location: "Santiago de Chile",
-    date: "Hace 3 semanas",
+    name: "Javier P.",
+    location: "Barranquilla",
+    date: "Hace 4 días",
     rating: 5,
-    title: "Superó todas mis expectativas",
-    text: "Dudé al principio por el precio, pero después del primer paseo entendí por qué vale más. La diferencia con cualquier otra correa es brutal. El mecanismo de bloqueo me salva la vida cuando hay autos. 5 estrellas sin dudarlo.",
+    title: "Perfecto para pasear dos mascotas",
+    text: "Esto es perfecto para pasear a 2 mascotas con 1 correa de control. 👍 tiene reflectores en la correa 👍 Gira como se anuncia. Utiliza 1 pila AAA solo en la linterna, muy útil para caminar de noche. compartimento para bolsa de caca. Envío y entrega rápidos, muy recomendable. 👌",
     verified: true,
     product: "PawLux Standard — Negro",
+    image: "/reviews/image copy 3.png",
   },
 ]
 
@@ -135,6 +139,12 @@ export function ReviewsSection() {
                 <p className="mb-1.5 text-sm font-semibold text-foreground">{review.title}</p>
                 <p className="text-sm leading-relaxed text-muted-foreground">{review.text}</p>
               </div>
+              <img
+                src={review.image}
+                alt={`Reseña de ${review.name}`}
+                className="h-40 w-full rounded-xl object-cover"
+                loading="lazy"
+              />
               <p className="text-xs text-muted-foreground">Producto: {review.product}</p>
             </div>
           ))}

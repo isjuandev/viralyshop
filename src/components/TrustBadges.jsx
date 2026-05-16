@@ -10,7 +10,7 @@ const badges = [
 
 export function TrustBadges() {
   return (
-    <section className="bg-[#0A0A0A] px-4 py-12 text-white md:py-16">
+    <section id="product" className="bg-[#0A0A0A] px-4 py-12 text-white md:py-16">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 md:grid-cols-4">
         {badges.map(({ icon: Icon, title, description }, index) => (
           <Reveal key={title} delay={index * 80}>

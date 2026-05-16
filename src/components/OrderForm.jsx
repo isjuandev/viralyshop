@@ -13,9 +13,9 @@ const colors = [
 ];
 
 const packs = [
-  { qty: 1, title: "1 unidad", badge: null, note: "Para dos perros en casa" },
-  { qty: 2, title: "2 unidades", badge: "MÁS VENDIDO", note: "Ahorra 15%" },
-  { qty: 3, title: "3 unidades", badge: "MEJOR AHORRO", note: "Ahorra 25%" },
+  { qty: 1, title: "1 unidad", badge: null, note: "Ideal si tienes tus 2 perros" },
+  { qty: 2, title: "2 unidades", badge: "MÁS VENDIDO", note: "Regálale una a esa amiga que también tiene 2 perros 🎁" },
+  { qty: 3, title: "3 unidades", badge: "MEJOR AHORRO", note: "Para ti + 2 regalos. El mayor ahorro posible 💰" },
 ];
 
 export function OrderForm() {
@@ -44,8 +44,11 @@ export function OrderForm() {
   };
 
   return (
-    <section id="formulario" className="bg-[#F8F8F8] px-4 py-16 scroll-mt-20">
+    <section id="order" className="bg-[#F8F8F8] px-4 py-16 scroll-mt-20">
       <Reveal className="mx-auto max-w-[560px] rounded-2xl bg-white p-6 shadow-xl md:p-8">
+        <div className="mb-5 w-full rounded-lg bg-[#DCFCE7] px-3 py-3 text-center text-[13px] font-extrabold text-[#166534]">
+          ⚡ Respondemos en menos de 5 minutos · Envío en 24h hábiles
+        </div>
         <h2 className="text-center text-[28px] font-bold md:text-[42px]">Completa tu pedido</h2>
         <p className="mt-2 text-center text-[#6B7280]">Pagas en efectivo cuando llegue a tu puerta</p>
         <form onSubmit={submit} className="mt-7 space-y-5" noValidate>
@@ -60,7 +63,7 @@ export function OrderForm() {
                 const packTotal = calculatePrice(pack.qty);
                 const packDiscount = calculateDiscount(pack.qty);
                 return (
-                  <button type="button" key={pack.qty} onClick={() => setCantidad(pack.qty)} className={`relative rounded-xl border p-4 text-left transition ${cantidad === pack.qty ? "border-[3px] border-[#1E90FF] bg-[#EFF6FF]" : "border-[#E5E7EB] bg-white"}`}>
+                  <button type="button" key={pack.qty} onClick={() => setCantidad(pack.qty)} className={`relative min-h-[72px] rounded-xl border p-4 text-left transition ${cantidad === pack.qty ? "border-[3px] border-[#1E90FF] bg-[#EFF6FF]" : pack.qty === 2 ? "border-[2px] border-[#1E90FF] bg-[#F8FBFF]" : "border-[#E5E7EB] bg-white"}`}>
                     {pack.badge && <span className="absolute right-3 top-[-10px] rounded-full bg-[#16A34A] px-3 py-1 text-[10px] font-extrabold text-white">{pack.badge}</span>}
                     <div className="flex items-center justify-between gap-4">
                       <div>
@@ -90,7 +93,21 @@ export function OrderForm() {
             <div className="flex justify-between text-xl font-extrabold text-[#1E90FF]"><span>TOTAL:</span><span>${formatPrice(total)} COP</span></div>
             <p className="mt-3 inline-flex items-center gap-2 font-bold"><Banknote className="size-5 text-[#16A34A]" />Método de pago: Contra entrega</p>
           </div>
+          <div className="w-full max-w-[380px] rounded-lg border border-[#E5E7EB] bg-[#FAFAFA] p-3">
+            <div className="mb-2 text-[13px] leading-none text-[#F59E0B]">⭐⭐⭐⭐⭐</div>
+            <div className="flex items-start gap-2.5">
+              <img
+                src="/reviews/image copy 2.png"
+                alt="Avatar de cliente verificado"
+                className="size-8 shrink-0 rounded-full object-cover"
+              />
+              <p className="text-[13px] leading-snug text-[#374151]">
+                "Llegó en 4 días y funciona perfecto. Mis dos perros ya no se enredan." — Camila R., Bogotá ✅ Compra verificada
+              </p>
+            </div>
+          </div>
           <button className="inline-flex h-[60px] w-full items-center justify-center gap-2 rounded-[10px] bg-[#1E90FF] text-[15px] font-extrabold uppercase tracking-[0.05em] text-white transition hover:scale-[1.02]" type="submit">ENVIAR PEDIDO POR WHATSAPP <MessageCircle className="size-5" /></button>
+          <p className="text-center text-[12px] text-[#6B7280]">📦 Si haces tu pedido hoy antes de las 3pm, sale mañana</p>
           <p className="text-center text-[13px] font-medium text-[#6B7280]">Al hacer click se abrirá WhatsApp con tu pedido listo. Solo confirma y nosotros hacemos el resto.</p>
           <div className="grid grid-cols-3 gap-2 text-center text-[11px] font-bold text-[#374151]">
             <span className="rounded-lg bg-[#F8F8F8] p-2"><CheckCircle2 className="mx-auto mb-1 size-4 text-[#16A34A]" />Sin anticipo</span>
