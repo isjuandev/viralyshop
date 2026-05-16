@@ -1,6 +1,5 @@
 import { CountdownProvider } from "./context/CountdownContext";
 import { Hero } from "./components/Hero";
-import { SocialProof } from "./components/SocialProof";
 import { ProblemSolution } from "./components/ProblemSolution";
 import { HowItWorks } from "./components/HowItWorks";
 import { ProductFeatures } from "./components/ProductFeatures";
@@ -24,7 +23,6 @@ export default function App() {
           <Hero />
           <ProblemSolution />
           <HowItWorks />
-          <SocialProof />
           <EmotionalClose />
           <Comparison />
           <OrderForm />

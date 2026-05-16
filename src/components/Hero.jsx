@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { ArrowLeft, ArrowRight, BadgeCheck, Banknote, Flame, Lock, ShieldCheck, ShoppingCart, Star, Truck, Zap } from "lucide-react";
+import { ArrowLeft, ArrowRight, Banknote, Flame, Lock, ShieldCheck, ShoppingCart, Star, Truck, Zap } from "lucide-react";
 import { BASE_PRICE, COMPARE_PRICE } from "../constants";
 import { formatPrice } from "../utils/format";
 import { scrollToForm } from "../utils/scroll";
 import { Countdown } from "./Countdown";
 import { Reveal } from "./Reveal";
+import { ReviewsCarousel } from "./SocialProof";
 
 const colors = [
   { name: "Negro", hex: "#1a1a1a" },
@@ -43,12 +44,12 @@ export function Hero() {
         <span className="hidden sm:inline">· Solo quedan 11 unidades</span>
       </div>
 
-      <div className="container-shell grid gap-6 px-4 pb-12 pt-4 md:grid-cols-[55fr_45fr] md:items-center md:gap-10 md:px-8 md:py-12">
-        <Reveal>
+      <div className="container-shell grid max-w-full gap-6 overflow-hidden px-3 pb-12 pt-3 md:grid-cols-[55fr_45fr] md:items-center md:gap-10 md:px-8 md:py-12">
+        <Reveal className="min-w-0">
           <ProductGallery current={current} active={active} move={move} setActive={setActive} />
         </Reveal>
 
-        <Reveal>
+        <Reveal className="min-w-0">
           <div className="kicker">Correa retráctil doble · control individual · 3 metros</div>
           <h1 className="mt-4 max-w-[12ch] text-[36px] font-extrabold leading-[0.98] text-[var(--color-dark)] md:text-[48px]">
             Control real para dos perros. En una sola mano.
@@ -78,23 +79,21 @@ export function Hero() {
               </div>
             </div>
 
-            <button aria-label="Pedir PaseoCan ahora con pago contra entrega" onClick={scrollToForm} className="btn-primary mt-5">
-              PEDIR AHORA — PAGO CONTRA ENTREGA <ShoppingCart size={18} strokeWidth={2.5} />
+            <button aria-label="Pedir PaseoCan ahora con pago contra entrega" onClick={scrollToForm} className="btn-primary mt-5 px-3 text-[13px] sm:text-[15px]">
+              <span className="truncate">PEDIR AHORA — PAGO CONTRA ENTREGA</span> <ShoppingCart className="shrink-0" size={18} strokeWidth={2.5} />
             </button>
             <p className="microcopy"><ShieldCheck size={12} strokeWidth={2} /> Sin tarjeta · Pago contra entrega · Sin riesgo</p>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-2 md:grid-cols-4">
+          <div className="mt-4 grid min-w-0 grid-cols-1 gap-2 sm:grid-cols-2 md:grid-cols-4">
             {trustItems.map(({ icon: Icon, text }) => (
-              <span key={text} className="flex items-center justify-center gap-2 rounded-xl bg-[var(--color-success-light)] px-3 py-3 text-[12px] font-medium text-[var(--color-muted)]">
-                <Icon size={18} className="text-[var(--color-success)]" strokeWidth={2} />{text}
+              <span key={text} className="flex min-w-0 items-center justify-center gap-2 rounded-xl bg-[var(--color-success-light)] px-3 py-3 text-[12px] font-medium text-[var(--color-muted)]">
+                <Icon size={18} className="shrink-0 text-[var(--color-success)]" strokeWidth={2} /><span className="truncate">{text}</span>
               </span>
             ))}
           </div>
 
-          <div className="card-surface mt-4 p-4">
-            <p className="text-[13px] leading-relaxed text-[var(--color-body)]"><span className="font-bold text-[var(--color-warning)]">★★★★★</span> "Llegó en 4 días, mis perros ya no se enredan" — <span className="font-bold">Camila R., Bogotá</span> <BadgeCheck size={14} className="inline text-[var(--color-success)]" /> Compra verificada</p>
-          </div>
+          <ReviewsCarousel className="mt-4 max-w-full overflow-hidden" cardClassName="min-w-0 w-full shrink-0 snap-center" insetControls />
         </Reveal>
       </div>
     </section>
@@ -108,7 +107,6 @@ function ProductGallery({ current, active, move, setActive }) {
         <img src={current.src} alt={current.label} className="h-full w-full object-contain md:object-cover" fetchPriority={active === 0 ? "high" : "auto"} loading={active === 0 ? "eager" : "lazy"} />
         <button aria-label="Imagen anterior" onClick={() => move(-1)} className="absolute left-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[var(--color-dark)] shadow-md"><ArrowLeft size={20} strokeWidth={2} /></button>
         <button aria-label="Imagen siguiente" onClick={() => move(1)} className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[var(--color-dark)] shadow-md"><ArrowRight size={20} strokeWidth={2} /></button>
-        <span className="absolute left-3 top-3 inline-flex items-center gap-1.5 rounded bg-white px-3 py-1 text-[12px] font-bold text-[var(--color-dark)] shadow"><BadgeCheck size={14} className="text-[var(--color-success)]" /> Producto destacado</span>
       </div>
       <div className="mt-3 grid grid-cols-6 gap-2">
         {gallery.map((item, index) => (
@@ -120,7 +118,7 @@ function ProductGallery({ current, active, move, setActive }) {
       <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[12px] font-semibold text-[var(--color-body)]">
         <span className="rounded-lg bg-[var(--color-primary-light)] p-2"><Lock className="mx-auto mb-1 text-[var(--color-primary)]" size={18} />Control</span>
         <span className="rounded-lg bg-[var(--color-success-light)] p-2"><ShieldCheck className="mx-auto mb-1 text-[var(--color-success)]" size={18} />Garantía</span>
-        <span className="rounded-lg bg-[var(--color-primary-light)] p-2"><Truck className="mx-auto mb-1 text-[var(--color-primary)]" size={18} />Gratis</span>
+        <span className="rounded-lg bg-[var(--color-primary-light)] p-2"><Truck className="mx-auto mb-1 text-[var(--color-primary)]" size={18} />Envío Gratis</span>
       </div>
     </div>
   );

@@ -104,7 +104,7 @@ export function ExitIntentModal() {
           onClick={handlePrimaryClick}
           className="mt-5 inline-flex h-14 w-full items-center justify-center rounded-xl bg-[#1E90FF] px-4 text-[15px] font-extrabold uppercase tracking-[0.05em] text-white transition hover:scale-[1.01]"
         >
-          QUIERO MI DESCUENTO → $34.900
+          QUIERO MI DESCUENTO → $109.000
         </button>
 
         <button

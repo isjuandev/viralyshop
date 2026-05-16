@@ -20,7 +20,7 @@ export function ProblemSolution() {
         </div>
         <p className="my-6 text-center text-[15px] italic text-[var(--color-muted)]">El problema no son tus perros. Es la correa equivocada.</p>
         <div className="mx-auto max-w-[420px] text-center">
-          <button onClick={scrollToForm} className="btn-primary">QUIERO PASEOS SIN ESTRÉS → $34.900</button>
+          <button onClick={scrollToForm} className="btn-primary">QUIERO PASEOS SIN ESTRÉS → $109.000</button>
         </div>
       </div>
     </section>

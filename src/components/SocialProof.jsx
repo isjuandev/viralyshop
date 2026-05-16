@@ -6,9 +6,26 @@ const BASE_SOCIAL_PROOF = 847;
 const STORAGE_KEY = "social-proof-count";
 
 const reviews = [
-  ["C", "Camila R.", "Bogotá", "Tengo dos perros pequeños y los controlo perfecto. Las 3 metros de correa les dan libertad pero sin perder control."],
-  ["A", "Andrés M.", "Medellín", "El freno individual es genial — puedo parar a uno sin afectar al otro. Llegó en 5 días, muy bien empacado."],
-  ["L", "Laura T.", "Cali", "Pagar contra entrega me dio confianza para comprar. El giro automático de verdad funciona, no se enredan."],
+  ["C", "Camila R.", "Bogotá", "La estoy usando hace una semana y sí ayuda bastante. Antes mis perros se cruzaban todo el tiempo, ahora casi no se enredan."],
+  ["A", "Andrés M.", "Medellín", "El freno individual fue lo que más me gustó. Si uno se adelanta lo freno sin halar al otro, se siente más control en el paseo."],
+  ["L", "Laura T.", "Cali", "Compré con pago contra entrega y llegó bien empacada. Se nota resistente y para dos perros es mucho más práctica que usar dos correas."],
+  ["V", "Valentina P.", "Barranquilla", "La linterna y el compartimento para bolsas son detalles simples, pero en la noche sí se agradecen. Hasta ahora todo bien."],
+  ["R", "Roberto A.", "Armenia", "No hace magia, pero sí mejora bastante la caminata. La usamos todos los días y por ahora va firme, sin trabarse."],
+  ["J", "Juan P.", "Pereira", "Tengo dos perros medianos y me cansaba llevar una correa en cada mano. Con esta me organizo mejor y termino menos agotado."],
+  ["S", "Sofía R.", "Medellín", "Buena relación precio-calidad. Llegó rápido, fue fácil de usar desde el primer día y no tuve que estar ajustando nada raro."],
+  ["L", "Laura T.", "Riohacha", "Pensé que iba a ser incómoda, pero es ligera. Mi esposo también la usa y ambos coincidimos en que vale la pena."],
+
+];
+
+const reviewImages = [
+  "/reviews/image.png",
+  "/reviews/image copy.png",
+  "/reviews/image copy 2.png",
+  "/reviews/image copy 3.png",
+  "/reviews/image copy 4.png",
+  "/reviews/image copy 5.png",
+  "/reviews/image copy 6.png",
+  "/reviews/image copy 7.png",
 ];
 
 export function SocialProof() {
@@ -148,11 +165,112 @@ export function SocialProof() {
   );
 }
 
-function ReviewCard({ initial, name, city, text, index, expanded, setExpanded, className = "", delay = 0 }) {
+export function ReviewsBlock({ className = "" }) {
+  const [expanded, setExpanded] = useState({});
+
+  return (
+    <div className={`mt-4 ${className}`}>
+      <div className="card-surface overflow-hidden">
+        <div className="flex items-center justify-between gap-3 border-b border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-3">
+          <div>
+            <div className="flex gap-0.5 text-[var(--color-warning)]">
+              {Array.from({ length: 5 }).map((_, index) => <Star key={index} className="size-4 fill-[var(--color-warning)] text-[var(--color-warning)]" />)}
+            </div>
+            <p className="mt-1 text-[13px] font-extrabold text-[var(--color-dark)]">4.9/5 — 127 reseñas verificadas</p>
+          </div>
+          <span className="inline-flex items-center gap-1 rounded bg-[var(--color-success-light)] px-2 py-1 text-[11px] font-bold text-[var(--color-success)]"><BadgeCheck size={14} /> Verificadas</span>
+        </div>
+        <div className="max-h-[520px] overflow-y-auto p-3">
+          <div className="grid gap-3">
+            {reviews.map(([initial, name, city, text], index) => (
+              <ReviewCard
+                key={name}
+                initial={initial}
+                name={name}
+                city={city}
+                text={text}
+                index={index}
+                expanded={expanded}
+                setExpanded={setExpanded}
+                compact
+              />
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ReviewsCarousel({ className = "", cardClassName = "min-w-[86vw] snap-center md:min-w-[360px]", insetControls = false }) {
+  const carouselRef = useRef(null);
+  const [expanded, setExpanded] = useState({});
+  const [activeReview, setActiveReview] = useState(0);
+
+  useEffect(() => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+
+    const updateActive = () => {
+      const cardWidth = carousel.firstElementChild?.getBoundingClientRect().width || 1;
+      const nextIndex = Math.round(carousel.scrollLeft / (cardWidth + 16));
+      setActiveReview(Math.min(reviews.length - 1, Math.max(0, nextIndex)));
+    };
+
+    carousel.addEventListener("scroll", updateActive, { passive: true });
+    return () => carousel.removeEventListener("scroll", updateActive);
+  }, []);
+
+  const scrollReview = (direction) => {
+    const carousel = carouselRef.current;
+    if (!carousel) return;
+    const cardWidth = carousel.firstElementChild?.getBoundingClientRect().width || carousel.clientWidth;
+    carousel.scrollBy({ left: direction * (cardWidth + 16), behavior: "smooth" });
+  };
+
+  return (
+    <div className={`relative min-w-0 ${className}`}>
+      <div
+        ref={carouselRef}
+        className={`flex min-w-0 snap-x snap-mandatory gap-4 overflow-x-auto pb-4 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden ${insetControls ? "px-0" : "px-1"}`}
+        aria-label="Carrusel de reseñas"
+      >
+        {reviews.map(([initial, name, city, text], index) => (
+          <ReviewCard
+            key={name}
+            initial={initial}
+            name={name}
+            city={city}
+            text={text}
+            index={index}
+            expanded={expanded}
+            setExpanded={setExpanded}
+            className={cardClassName}
+          />
+        ))}
+      </div>
+
+      <button aria-label="Reseña anterior" onClick={() => scrollReview(-1)} className={`absolute top-[42%] z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[var(--color-dark)] shadow-lg ring-1 ring-[var(--color-border)] ${insetControls ? "left-3" : "left-0 -translate-x-1/2"}`}>
+        <ChevronLeft className="size-5" />
+      </button>
+      <button aria-label="Siguiente reseña" onClick={() => scrollReview(1)} className={`absolute top-[42%] z-10 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[var(--color-dark)] shadow-lg ring-1 ring-[var(--color-border)] ${insetControls ? "right-3" : "right-0 translate-x-1/2"}`}>
+        <ChevronRight className="size-5" />
+      </button>
+
+      <div className="mt-2 flex justify-center gap-2" aria-hidden="true">
+        {reviews.map(([, name], index) => (
+          <span key={name} className={`h-2 rounded-full transition-all ${activeReview === index ? "w-6 bg-[var(--color-primary)]" : "w-2 bg-[#CBD5E1]"}`} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function ReviewCard({ initial, name, city, text, index, expanded, setExpanded, className = "", delay = 0, compact = false }) {
   return (
     <Reveal delay={delay} className={`text-left ${className}`}>
-      <article className="card-surface card-hover h-full p-5">
-        <img src={["/social-proof.webp", "/lifestyle-walk.webp", "/product-bundle.webp"][index]} alt={`Reseña de ${name}`} className="mb-4 aspect-[4/3] w-full rounded-lg object-cover" loading="lazy" />
+      <article className={`card-surface card-hover h-full ${compact ? "p-3" : "p-5"}`}>
+        {!compact && <img src={reviewImages[index % reviewImages.length]} alt={`Reseña de ${name}`} className="mb-4 aspect-[4/3] w-full rounded-lg object-cover" loading="lazy" />}
         <div className="flex items-center gap-3"><span className="flex size-10 items-center justify-center rounded-full bg-[var(--color-primary)] font-bold text-white">{initial}</span><div><h3 className="text-lg font-semibold">{name}</h3><p className="text-[13px] font-medium text-[var(--color-muted)]">{city}</p><span className="mt-1 inline-flex items-center gap-1 rounded bg-[var(--color-success-light)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-success)]"><BadgeCheck size={14} /> Compra verificada</span></div></div>
         <div className="mt-3 flex gap-0.5">{Array.from({ length: 5 }).map((_, starIndex) => <Star key={starIndex} className="size-4 fill-[var(--color-warning)] text-[var(--color-warning)]" />)}</div>
         <p className={`${expanded[name] ? "mt-2 text-sm leading-relaxed text-[var(--color-body)]" : "mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--color-body)]"}`}>"{text}"</p>

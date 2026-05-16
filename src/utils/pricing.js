@@ -1,11 +1,18 @@
-import { BASE_PRICE } from "../constants";
+export const BUNDLE_PRICING = {
+  single: { qty: 1, originalPrice: 159000, savingsPct: 31.4466 },
+  double: { qty: 2, originalPrice: 318000, savingsPct: 37.4215 },
+};
+
+export function getBundleByQty(qty) {
+  return qty >= 2 ? BUNDLE_PRICING.double : BUNDLE_PRICING.single;
+}
 
 export function calculatePrice(qty) {
-  if (qty === 2) return Math.round(BASE_PRICE * 2 * 0.85);
-  if (qty === 3) return Math.round(BASE_PRICE * 3 * 0.75);
-  return BASE_PRICE;
+  const bundle = getBundleByQty(qty);
+  return Math.round(bundle.originalPrice * (1 - bundle.savingsPct / 100));
 }
 
 export function calculateDiscount(qty) {
-  return BASE_PRICE * qty - calculatePrice(qty);
+  const bundle = getBundleByQty(qty);
+  return bundle.originalPrice - calculatePrice(qty);
 }

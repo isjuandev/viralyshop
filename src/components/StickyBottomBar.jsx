@@ -28,7 +28,7 @@ export function StickyBottomBar() {
         onClick={scrollToForm}
         className="sticky-mobile-cta flex h-[60px] w-full items-center justify-center bg-[#1E90FF] px-4 text-center text-[15px] font-extrabold text-white"
       >
-        🔥 $34.900 — PEDIR AHORA →
+        🔥 $109.000 — PEDIR AHORA →
       </button>
     </div>
   );

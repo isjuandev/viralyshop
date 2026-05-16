@@ -1,17 +1,16 @@
 import { useState } from "react"
 import { ShoppingCart, Zap, CircleCheck as CheckCircle2, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { BUNDLE_PRICING } from "../utils/pricing"
 
 const bundles = [
   {
     id: "single",
     name: "Pack Básico",
     qty: "1 PawLux",
-    price: 49.99,
-    originalPrice: 79.99,
-    savings: 30,
-    savingsPct: 37,
-    perUnit: 49.99,
+    originalPrice: BUNDLE_PRICING.single.originalPrice,
+    savingsPct: BUNDLE_PRICING.single.savingsPct,
+    units: 1,
     popular: false,
     badge: null,
     perks: ["Sistema anti-enredos", "Freno instantáneo", "Garantía 30 días", "Envío en 24-48h"],
@@ -21,11 +20,9 @@ const bundles = [
     id: "double",
     name: "Pack Doble",
     qty: "2 PawLux",
-    price: 79.99,
-    originalPrice: 159.98,
-    savings: 79.99,
-    savingsPct: 50,
-    perUnit: 39.99,
+    originalPrice: BUNDLE_PRICING.double.originalPrice,
+    savingsPct: BUNDLE_PRICING.double.savingsPct,
+    units: 2,
     popular: true,
     badge: "MÁS VENDIDO",
     perks: [
@@ -37,27 +34,6 @@ const bundles = [
     ],
     color: "electric" as const,
   },
-  {
-    id: "triple",
-    name: "Pack Familia",
-    qty: "3 PawLux",
-    price: 99.99,
-    originalPrice: 239.97,
-    savings: 139.98,
-    savingsPct: 58,
-    perUnit: 33.33,
-    popular: false,
-    badge: "MEJOR PRECIO",
-    perks: [
-      "3× Sistema anti-enredos",
-      "3× Freno instantáneo",
-      "Garantía 30 días",
-      "Envío GRATIS express",
-      "Funda protectora × 3",
-      "Tarjeta regalo premium",
-    ],
-    color: "default" as const,
-  },
 ]
 
 interface BundleSectionProps {
@@ -67,7 +43,14 @@ interface BundleSectionProps {
 export function BundleSection({ onAddToCart }: BundleSectionProps) {
   const [selected, setSelected] = useState("double")
 
-  const selectedBundle = bundles.find((b) => b.id === selected)!
+  const computedBundles = bundles.map((bundle) => {
+    const price = Math.round(bundle.originalPrice * (1 - bundle.savingsPct / 100))
+    const savings = bundle.originalPrice - price
+    const perUnit = price / bundle.units
+    return { ...bundle, price, savings, perUnit }
+  })
+
+  const selectedBundle = computedBundles.find((b) => b.id === selected)!
 
   return (
     <section id="bundle" className="py-20 sm:py-28">
@@ -93,8 +76,8 @@ export function BundleSection({ onAddToCart }: BundleSectionProps) {
         </div>
 
         {/* Bundle options */}
-        <div className="grid gap-4 sm:grid-cols-3">
-          {bundles.map((bundle) => (
+        <div className="grid gap-4 sm:grid-cols-2">
+          {computedBundles.map((bundle) => (
             <button
               key={bundle.id}
               onClick={() => setSelected(bundle.id)}
