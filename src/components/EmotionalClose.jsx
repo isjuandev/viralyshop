@@ -1,23 +1,17 @@
+import { PawPrint, ShieldCheck, ShoppingCart } from "lucide-react";
 import { scrollToForm } from "../utils/scroll";
 
 export function EmotionalClose() {
   return (
-    <section className="bg-[#0A0A0A] px-4 py-10 text-center text-white md:py-[60px]">
+    <section className="section-shell bg-[var(--color-dark-section)] text-center text-white">
       <div className="mx-auto max-w-3xl">
-        <div className="text-5xl">🐾</div>
-        <h2 className="mt-4 text-[24px] font-extrabold leading-tight md:text-[32px]">
-          Tu próximo paseo puede ser completamente diferente.
-        </h2>
-        <p className="mt-3 text-white/80">
-          Sin jalones. Sin enredos. Sin estrés. Solo tú y tus perros disfrutando.
-        </p>
-        <button
-          onClick={scrollToForm}
-          className="mt-7 inline-flex h-14 w-full items-center justify-center rounded-[10px] bg-[#1E90FF] px-4 text-[15px] font-extrabold uppercase tracking-[0.05em] text-white md:w-[360px]"
-        >
-          QUIERO ESE PASEO — $34.900 →
+        <div className="mx-auto flex size-14 items-center justify-center rounded-full bg-white/10 text-white"><PawPrint size={28} strokeWidth={2} /></div>
+        <h2 className="mt-4 text-[28px] font-extrabold leading-tight text-white md:text-[42px]">Tu próximo paseo puede ser completamente diferente.</h2>
+        <p className="mt-3 text-[17px] text-white/70">Sin jalones. Sin enredos. Sin estrés.</p>
+        <button onClick={scrollToForm} className="btn-primary mx-auto mt-7 md:w-[390px]">
+          QUIERO ESE PASEO — $34.900 <ShoppingCart size={18} strokeWidth={2.5} />
         </button>
-        <p className="mt-3 text-xs text-white/60">Pago contra entrega · Envío gratis · Garantía 30 días</p>
+        <p className="microcopy text-white/50"><ShieldCheck size={12} /> Pago contra entrega · Envío gratis · Garantía 30 días</p>
       </div>
     </section>
   );

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Clock, ShieldCheck, Truck, Zap } from "lucide-react";
 import { scrollToForm } from "../utils/scroll";
 import { Countdown } from "./Countdown";
 
@@ -16,25 +16,24 @@ export function Urgency() {
   }, []);
 
   return (
-    <section ref={ref} className="bg-[#7F1D1D] px-4 py-14 text-center text-white">
+    <section ref={ref} className="section-shell bg-[var(--color-urgency-section)] text-center text-white">
       <div className="mx-auto max-w-3xl">
-        <h2 className="inline-flex items-center justify-center gap-2 text-[28px] font-bold md:text-[42px]"><AlertTriangle className="size-8 md:size-10" />Última oportunidad al precio de oferta</h2>
-        <p className="mt-2 text-lg">Solo quedan 11 unidades al precio de oferta</p>
-        <p className="mt-1 text-[14px] text-white/80">Cuando se acaben, el precio vuelve a $49.000 COP</p>
-        <div className="mt-8 h-5 overflow-hidden rounded-full bg-[#3F1111]">
-          <div className="h-full rounded-full bg-[#DC2626] transition-all duration-1000" style={{ width: active ? "78%" : "0%" }} />
+        <div className="mx-auto mb-4 flex size-12 items-center justify-center rounded-full bg-white/10"><AlertTriangle size={24} strokeWidth={2} /></div>
+        <h2 className="text-[28px] font-extrabold leading-tight text-white md:text-[42px]">Última oportunidad al precio de oferta</h2>
+        <p className="mt-3 text-[17px] font-semibold">Solo quedan 11 unidades al precio de oferta</p>
+        <p className="mt-1 text-[14px] text-white/75">Cuando se acaben, el precio vuelve a $49.000 COP</p>
+        <div className="mt-8 h-2.5 overflow-hidden rounded-full bg-white/20">
+          <div className="h-full rounded-full bg-[var(--color-warning)] transition-all duration-1000 ease-out" style={{ width: active ? "78%" : "0%" }} />
         </div>
-        <p className="mt-2 text-sm font-bold">78 de 100 unidades vendidas esta semana</p>
-        <p className="mt-5 text-sm font-semibold text-white/90">La oferta vence en:</p>
-        <p className="mt-1 text-[24px] font-extrabold leading-none"><Countdown dark /></p>
-        <button onClick={scrollToForm} className="mt-7 h-[60px] w-full rounded-[10px] bg-white px-6 py-4 text-[15px] font-extrabold uppercase tracking-[0.05em] text-[#7F1D1D] transition hover:scale-[1.02] md:w-auto">
-          ASEGURAR MI UNIDAD AHORA →
-        </button>
-        <p className="mt-2 text-[12px] text-white/70">🔒 Pago contra entrega · Sin tarjeta · Sin riesgo</p>
-        <div className="mt-4 flex flex-col items-center justify-center gap-2 text-[12px] text-white sm:flex-row sm:gap-6">
-          <span>📦 Envío gratis</span>
-          <span>🛡️ Garantía 30 días</span>
-          <span>⚡ Despacho en 24h</span>
+        <p className="mt-2 text-[13px] font-bold">78 de 100 unidades vendidas esta semana</p>
+        <p className="mt-6 inline-flex items-center justify-center gap-2 text-[12px] font-semibold uppercase tracking-[0.1em] text-white/80"><Clock size={16} /> La oferta vence en:</p>
+        <p className="mt-2 text-[24px] font-extrabold leading-none"><Countdown dark /></p>
+        <button onClick={scrollToForm} className="btn-urgency mx-auto mt-7 md:w-[390px]">ASEGURAR MI UNIDAD AHORA →</button>
+        <p className="microcopy text-white/70"><ShieldCheck size={12} /> Sin tarjeta · Pago contra entrega · Sin riesgo</p>
+        <div className="mt-5 grid grid-cols-1 gap-2 text-[13px] font-medium text-white/85 sm:grid-cols-3">
+          <span className="flex items-center justify-center gap-2"><Truck size={16} /> Envío gratis</span>
+          <span className="flex items-center justify-center gap-2"><ShieldCheck size={16} /> Garantía 30 días</span>
+          <span className="flex items-center justify-center gap-2"><Zap size={16} /> Despacho en 24h</span>
         </div>
       </div>
     </section>

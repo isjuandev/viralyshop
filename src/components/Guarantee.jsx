@@ -9,10 +9,10 @@ const items = [
 
 export function Guarantee() {
   return (
-    <section className="bg-white px-4 py-20">
-      <div className="mx-auto max-w-6xl text-center">
-        <Reveal><h2 className="text-[28px] font-bold md:text-[42px]">Compra sin miedo. En serio.</h2></Reveal>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">{items.map(([Icon, title, text], i) => <Reveal key={title} delay={i * 100}><article className="card-hover p-4"><Icon className="mx-auto size-16 text-[#16A34A]" /><h3 className="mt-2 text-lg font-semibold">{title}</h3><p className="mt-2 leading-relaxed text-[#6B7280]">{text}</p></article></Reveal>)}</div>
+    <section className="section-shell bg-[var(--color-white)]">
+      <div className="container-shell text-center">
+        <Reveal><span className="kicker">Compra protegida</span><h2 className="section-title mt-3">Compra sin miedo. En serio.</h2></Reveal>
+        <div className="mt-8 grid gap-4 md:grid-cols-3 md:gap-6">{items.map(([Icon, title, text], i) => <Reveal key={title} delay={i * 100}><article className="card-surface card-hover p-5 md:p-6"><span className="mx-auto flex size-14 items-center justify-center rounded-full bg-[var(--color-success-light)] text-[var(--color-success)]"><Icon size={28} /></span><h3 className="mt-4 text-[20px] font-bold">{title}</h3><p className="mt-2 text-[15px] leading-relaxed text-[var(--color-muted)]">{text}</p></article></Reveal>)}</div>
       </div>
     </section>
   );

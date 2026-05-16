@@ -1,4 +1,4 @@
-import { Check, X } from "lucide-react";
+import { CheckCircle, XCircle } from "lucide-react";
 import { BASE_PRICE } from "../constants";
 import { formatPrice } from "../utils/format";
 import { Reveal } from "./Reveal";
@@ -7,22 +7,30 @@ const rows = [["Pasea 2 perros a la vez", false, true], ["Freno individual x per
 
 export function Comparison() {
   return (
-    <section className="bg-white px-4 py-20">
-      <div className="mx-auto max-w-6xl">
-        <Reveal><h2 className="text-center text-[28px] font-bold md:text-[42px]">No es una correa común. Es una correa doble.</h2></Reveal>
-        <Reveal className="mt-10 overflow-x-auto">
-          <table className="min-w-[680px] w-full overflow-hidden rounded-xl border border-[#E5E7EB] text-center text-sm">
-            <thead><tr className="bg-[#F8F8F8]"><th className="p-4 text-left">Característica</th><th className="p-4">Correa Común</th><th className="border-2 border-[#1E90FF] bg-[#DBEAFE] p-4">PaseoCan Doble <span className="ml-2 rounded-full bg-[#1E90FF] px-2 py-1 text-[10px] font-bold text-white">TÚ ELIGES</span></th></tr></thead>
-            <tbody>{rows.map(([a, b, c]) => <tr key={a} className="border-t border-[#E5E7EB]"><td className="p-4 text-left font-bold">{a}</td><td className="p-4">{renderValue(b)}</td><td className="border-x-2 border-[#1E90FF] bg-[#EFF6FF] p-4 font-extrabold text-[#0A0A0A]">{renderValue(c)}</td></tr>)}</tbody>
-          </table>
+    <section className="section-shell bg-[var(--color-white)]">
+      <div className="container-shell">
+        <Reveal className="mx-auto max-w-3xl text-center"><span className="kicker">PaseoCan vs competencia</span><h2 className="section-title mt-3">No es una correa común. Es una correa doble.</h2></Reveal>
+        <Reveal className="card-surface mt-8 overflow-hidden md:mt-10">
+          <div className="grid grid-cols-[1fr_76px_104px] gap-2 bg-[var(--color-dark)] px-3 py-3 text-[11px] font-extrabold uppercase tracking-[0.08em] text-white md:grid-cols-[1.4fr_1fr_1fr] md:px-5 md:text-sm">
+            <span>Característica</span><span className="text-center text-white/70">Común</span><span className="text-center rounded bg-[var(--color-primary)] px-2 py-1">PaseoCan</span>
+          </div>
+          <div className="divide-y divide-[var(--color-border)] bg-white">
+            {rows.map(([feature, common, paseoCan], i) => (
+              <div key={feature} className={`grid grid-cols-[1fr_76px_104px] items-center gap-2 px-3 py-3 md:grid-cols-[1.4fr_1fr_1fr] md:px-5 md:py-4 ${i % 2 ? "bg-[var(--color-surface)]" : "bg-white"}`}>
+                <p className="text-left text-[13px] font-extrabold leading-tight text-[var(--color-dark)] md:text-base">{feature}</p>
+                <div className="flex justify-center">{renderValue(common, false)}</div>
+                <div className="flex justify-center">{renderValue(paseoCan, true)}</div>
+              </div>
+            ))}
+          </div>
         </Reveal>
       </div>
     </section>
   );
 }
 
-function renderValue(value) {
-  if (value === true) return <Check className="mx-auto size-5 text-[#16A34A]" />;
-  if (value === false) return <X className="mx-auto size-5 text-[#DC2626]" />;
-  return value;
+function renderValue(value, highlighted) {
+  if (value === true) return <CheckCircle size={18} className="text-[var(--color-success)]" fill="currentColor" strokeWidth={2} />;
+  if (value === false) return <XCircle size={18} className="text-[var(--color-urgency)]" strokeWidth={2} />;
+  return <span className={`rounded-full px-2.5 py-1 text-center text-[12px] font-extrabold md:text-sm ${highlighted ? "bg-[var(--color-primary-light)] text-[var(--color-primary)]" : "bg-slate-100 text-[var(--color-muted)]"}`}>{value}</span>;
 }

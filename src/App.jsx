@@ -19,7 +19,7 @@ import { SalesToast } from "./components/SalesToast";
 export default function App() {
   return (
     <CountdownProvider>
-      <div className="min-h-screen bg-white font-sans text-[#0A0A0A]">
+      <div className="min-h-screen bg-[var(--color-white)] font-sans text-[var(--color-body)]">
         <main>
           <Hero />
           <ProblemSolution />
