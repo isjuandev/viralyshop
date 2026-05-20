@@ -121,7 +121,7 @@ export function HowItWorks() {
               <video
                 ref={desktopVideoRef}
                 src={howVideo}
-                className="absolute inset-0 h-full w-full object-contain"
+                className="absolute inset-0 h-full w-full object-cover"
                 autoPlay
                 muted
                 loop
