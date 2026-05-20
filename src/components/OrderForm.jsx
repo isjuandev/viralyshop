@@ -4,26 +4,23 @@ import {
   Banknote,
   CheckCircle2,
   MapPin,
-  MessageCircle,
   Minus,
   Package,
-  Palette,
   Phone,
   Plus,
   ShieldCheck,
   Star,
   User,
 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa";
 import { formatPrice } from "../utils/format";
-import { BUNDLE_PRICING, calculateDiscount, calculatePrice } from "../utils/pricing";
+import {
+  BUNDLE_PRICING,
+  calculateDiscount,
+  calculatePrice,
+} from "../utils/pricing";
 import { buildMessage, openWhatsApp } from "../utils/whatsapp";
 import { Reveal } from "./Reveal";
-
-const colors = [
-  { name: "Negro", hex: "#1a1a1a" },
-  { name: "Azul", hex: "#0066FF" },
-  { name: "Rojo", hex: "#E53E3E" },
-];
 
 const packs = [
   {
@@ -40,12 +37,13 @@ const packs = [
   },
 ];
 const UNIT_PRICE = Math.round(
-  BUNDLE_PRICING.single.originalPrice * (1 - BUNDLE_PRICING.single.savingsPct / 100),
+  BUNDLE_PRICING.single.originalPrice *
+    (1 - BUNDLE_PRICING.single.savingsPct / 100),
 );
 
 export function OrderForm() {
   const [form, setForm] = useState({ nombre: "", telefono: "", ciudad: "" });
-  const [color, setColor] = useState("Negro");
+  const color = "Negro";
   const [cantidad, setCantidad] = useState(1);
   const [errors, setErrors] = useState({});
   const total = useMemo(() => calculatePrice(cantidad), [cantidad]);
@@ -75,11 +73,8 @@ export function OrderForm() {
       id="order"
       className="section-shell scroll-mt-20 bg-[var(--color-surface)]"
     >
-      <Reveal className="mx-auto max-w-[620px]">
-        <div className="mb-4 rounded-xl border border-[var(--color-success)]/20 bg-[var(--color-success-light)] px-4 py-3 text-center text-[13px] font-bold text-green-700">
-          Respondemos en menos de 5 minutos · Envío en 24h hábiles
-        </div>
-        <div className="card-surface p-5 md:p-8">
+      <Reveal className="mx-auto max-w-[620px] lg:max-w-[680px]">
+        <div className="card-surface p-5 md:p-8 lg:rounded-3xl lg:p-10 lg:shadow-[0_24px_70px_rgba(15,23,42,0.14)]">
           <div className="text-center">
             <span className="kicker">Pedido rápido</span>
             <h2 className="section-title mt-3">Completa tu pedido</h2>
@@ -89,32 +84,34 @@ export function OrderForm() {
           </div>
 
           <form onSubmit={submit} className="mt-7 space-y-5" noValidate>
-            <Field label="Nombre completo" error={errors.nombre} icon={User}>
-              <input
-                value={form.nombre}
-                onChange={(e) => setField("nombre", e.target.value)}
-                placeholder="Tu nombre completo"
-                className={inputClass(errors.nombre)}
-              />
-            </Field>
-            <Field
-              label="Número de WhatsApp"
-              error={errors.telefono}
-              icon={Phone}
-            >
-              <input
-                value={form.telefono}
-                onChange={(e) =>
-                  setField(
-                    "telefono",
-                    e.target.value.replace(/\D/g, "").slice(0, 10),
-                  )
-                }
-                placeholder="3XX XXX XXXX"
-                inputMode="numeric"
-                className={inputClass(errors.telefono)}
-              />
-            </Field>
+            <div className="grid gap-5 lg:grid-cols-2 lg:gap-4">
+              <Field label="Nombre completo" error={errors.nombre} icon={User}>
+                <input
+                  value={form.nombre}
+                  onChange={(e) => setField("nombre", e.target.value)}
+                  placeholder="Tu nombre completo"
+                  className={inputClass(errors.nombre)}
+                />
+              </Field>
+              <Field
+                label="Número de WhatsApp"
+                error={errors.telefono}
+                icon={Phone}
+              >
+                <input
+                  value={form.telefono}
+                  onChange={(e) =>
+                    setField(
+                      "telefono",
+                      e.target.value.replace(/\D/g, "").slice(0, 10),
+                    )
+                  }
+                  placeholder="3XX XXX XXXX"
+                  inputMode="numeric"
+                  className={inputClass(errors.telefono)}
+                />
+              </Field>
+            </div>
             <Field
               label="Ciudad de entrega"
               error={errors.ciudad}
@@ -130,31 +127,9 @@ export function OrderForm() {
 
             <div>
               <p className="mb-2 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--color-dark)]">
-                <Palette size={16} /> Color
-              </p>
-              <div className="grid grid-cols-3 gap-3">
-                {colors.map((item) => (
-                  <button
-                    type="button"
-                    key={item.name}
-                    onClick={() => setColor(item.name)}
-                    className={`min-h-[68px] rounded-xl border bg-white p-3 text-[13px] font-semibold transition hover:border-[var(--color-primary)] ${color === item.name ? "border-2 border-[var(--color-primary)] bg-[var(--color-primary-light)]" : "border-[var(--color-border)]"}`}
-                  >
-                    <span
-                      className="mx-auto block size-9 rounded-full border border-black/10"
-                      style={{ backgroundColor: item.hex }}
-                    />
-                    <span className="mt-1 block">{item.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div>
-              <p className="mb-2 flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.05em] text-[var(--color-dark)]">
                 <Package size={16} /> Elige tu pack
               </p>
-              <div className="grid gap-3">
+              <div className="grid gap-3 lg:grid-cols-2">
                 {packs.map((pack) => {
                   const packTotal = calculatePrice(pack.qty);
                   const packDiscount = calculateDiscount(pack.qty);
@@ -163,7 +138,7 @@ export function OrderForm() {
                       type="button"
                       key={pack.qty}
                       onClick={() => setCantidad(pack.qty)}
-                      className={`relative rounded-xl border p-4 text-left transition hover:border-[var(--color-primary)] ${cantidad === pack.qty ? "border-2 border-[var(--color-primary)] bg-[var(--color-primary-light)]" : "border-[var(--color-border)] bg-white"}`}
+                      className={`relative rounded-xl border p-4 text-left transition hover:border-[var(--color-primary)] lg:flex lg:min-h-[132px] lg:items-center ${cantidad === pack.qty ? "border-2 border-[var(--color-primary)] bg-[var(--color-primary-light)]" : "border-[var(--color-border)] bg-white"}`}
                     >
                       {pack.badge && (
                         <span
@@ -172,7 +147,7 @@ export function OrderForm() {
                           {pack.badge}
                         </span>
                       )}
-                      <div className="flex items-center justify-between gap-4">
+                      <div className="flex w-full items-center justify-between gap-4">
                         <div>
                           <p className="font-extrabold text-[var(--color-dark)]">
                             {pack.title}
@@ -217,9 +192,8 @@ export function OrderForm() {
               </div>
             </div>
 
-            <div className="rounded-xl border border-blue-100 bg-[var(--color-primary-light)] p-5 text-sm">
+            <div className="rounded-xl border border-blue-100 bg-[var(--color-primary-light)] p-5 text-sm lg:p-6">
               <Summary label="Producto" value="Correa Retráctil Doble" />
-              <Summary label="Color" value={color} />
               <Summary label="Cantidad" value={`${cantidad} unidades`} />
               <Summary
                 label="Precio unitario"
@@ -233,7 +207,7 @@ export function OrderForm() {
                 />
               )}
               <div className="my-3 border-t border-blue-200" />
-              <div className="flex justify-between text-xl font-extrabold text-[var(--color-primary)]">
+              <div className="flex justify-between gap-4 text-xl font-extrabold text-[var(--color-primary)] lg:items-center">
                 <span>TOTAL:</span>
                 <span>${formatPrice(total)} COP</span>
               </div>
@@ -259,12 +233,9 @@ export function OrderForm() {
               </p>
             </div>
 
-            <button className="btn-whatsapp" type="submit">
-              ENVIAR PEDIDO POR WHATSAPP <MessageCircle size={20} />
+            <button className="btn-whatsapp lg:w-full" type="submit">
+              ENVIAR PEDIDO POR WHATSAPP <FaWhatsapp size={20} />
             </button>
-            <p className="text-center text-[12px] text-[var(--color-muted)]">
-              Si haces tu pedido hoy antes de las 3pm, sale mañana
-            </p>
             <div className="grid grid-cols-3 gap-2 text-center text-[11px] font-bold text-[var(--color-body)]">
               <span className="rounded-lg bg-[var(--color-surface)] p-2">
                 <CheckCircle2

@@ -5,7 +5,6 @@ import { Reveal } from "./Reveal";
 const faqs = [
   ["¿Puedo pagar contra entrega?", "Sí. Pagas en efectivo cuando el paquete llega a tu puerta. Sin tarjeta, sin riesgo."],
   ["¿Cuánto tarda el envío?", "Entre 3 y 7 días hábiles. Te enviamos número de guía por WhatsApp para rastrear en tiempo real."],
-  ["¿Para qué tamaño de perro es?", "Está diseñada para perros de hasta 11.4 kg (25 lb) cada uno. Máximo 2 perros simultáneamente."],
   ["¿Las dos correas se pueden usar independientemente?", "Sí. Cada correa tiene su propio botón de freno y se controla por separado, aunque compartan la misma agarradera."],
   ["¿Qué tan largas son las correas?", "Cada correa se extiende hasta 3 metros y se retrae automáticamente según el movimiento del perro."],
   ["¿Qué pasa si el producto llega dañado?", "Contáctanos por WhatsApp y te enviamos uno nuevo sin costo. Tienes 30 días de garantía desde que lo recibes."],

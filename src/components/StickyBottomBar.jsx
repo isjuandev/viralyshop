@@ -15,7 +15,10 @@ export function StickyBottomBar() {
 
   useEffect(() => {
     const form = document.getElementById("order");
-    observerRef.current = new IntersectionObserver(([entry]) => setIsInOrderSection(entry.isIntersecting), { threshold: 0.25 });
+    observerRef.current = new IntersectionObserver(
+      ([entry]) => setIsInOrderSection(entry.isIntersecting),
+      { threshold: 0.25 },
+    );
     if (form) observerRef.current.observe(form);
     return () => observerRef.current?.disconnect();
   }, []);
@@ -23,10 +26,10 @@ export function StickyBottomBar() {
   if (!isPastThreshold || isInOrderSection) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-[999] md:hidden">
+    <div className="fixed inset-x-0 bottom-0 z-[999] lg:mx-auto lg:max-w-[500px]">
       <button
         onClick={scrollToForm}
-        className="sticky-mobile-cta flex h-[60px] w-full items-center justify-center bg-[#1E90FF] px-4 text-center text-[15px] font-extrabold text-white"
+        className="sticky-mobile-cta flex h-[60px] w-full items-center justify-center bg-[#1E90FF] px-4 text-center text-[15px] font-extrabold text-white lg:rounded-t-xl lg:shadow-[0_-12px_35px_rgba(15,23,42,0.28)]"
       >
         🔥 $109.000 — PEDIR AHORA →
       </button>

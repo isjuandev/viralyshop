@@ -39,6 +39,7 @@ body {
   background: var(--color-white);
   color: var(--color-body);
   text-rendering: optimizeLegibility;
+  overflow-x: hidden;
 }
 
 h1, h2, h3, h4 {
@@ -49,6 +50,7 @@ h1, h2, h3, h4 {
 button, input, textarea, select { font: inherit; }
 button { cursor: pointer; }
 img { max-width: 100%; }
+img:not([class*="h-"]) { height: auto; }
 
 @media (min-width: 768px) {
   :root { --text-lg: 22px; --text-xl: 28px; --text-2xl: 36px; --text-3xl: 48px; }
@@ -117,4 +119,16 @@ img { max-width: 100%; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; transition-duration: 0.01ms !important; }
+}
+
+@media (min-width: 1024px) {
+  .section-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  h1 { font-size: clamp(2rem, 3vw, 3.5rem); }
+  h2 { font-size: clamp(1.75rem, 2.5vw, 3rem); }
+  p { font-size: clamp(1rem, 1.2vw, 1.25rem); }
 }
