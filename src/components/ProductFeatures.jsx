@@ -92,11 +92,11 @@ export function ProductFeatures() {
         </Reveal>
         <Reveal className="hidden lg:block">
           <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
-            <div className="relative min-h-[560px] overflow-hidden rounded-3xl bg-[var(--color-dark)] shadow-[0_24px_70px_rgba(15,23,42,0.18)]">
+            <div className="relative min-h-[768px] overflow-hidden rounded-3xl bg-[var(--color-dark)] shadow-[0_24px_70px_rgba(15,23,42,0.18)]">
               <video
                 ref={desktopVideoRef}
                 src={featureVideo}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full object-contain"
                 autoPlay
                 muted
                 loop
