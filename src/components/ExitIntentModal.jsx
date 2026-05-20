@@ -93,7 +93,7 @@ export function ExitIntentModal() {
           ¡Espera! Tu descuento está a punto de expirar
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-[#4B5563] md:text-base">
-          Tienes reservado un descuento de $15.000. Si sales ahora, lo pierdes.
+          Tienes reservado un descuento de 45%. Si sales ahora, lo pierdes.
         </p>
 
         <p className="mt-4 text-sm font-extrabold uppercase tracking-[0.08em] text-[#DC2626]">
