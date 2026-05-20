@@ -53,7 +53,7 @@ export function Footer() {
               </h3>
               <div className="flex justify-center gap-3 md:justify-start">
                 <a
-                  href="https://www.instagram.com/"
+                  href="https://www.instagram.com/viralyshop"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram"
