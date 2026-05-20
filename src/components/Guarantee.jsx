@@ -23,14 +23,17 @@ export function Guarantee() {
   return (
     <section className="section-shell bg-[var(--color-white)] py-4 md:py-8">
       <div className="container-shell text-center">
-        <Reveal className="rounded-3xl bg-[var(--color-surface)] p-4 md:p-8 lg:mx-auto lg:max-w-[800px] lg:p-10">
+        <Reveal className="rounded-3xl bg-[var(--color-surface)] p-4 md:p-8 lg:p-10">
           <div className="overflow-hidden rounded-2xl">
-            <img
-              src="/Aliados.png"
-              alt="Mensajeros entregando pedido PaseoCan"
-              className="h-auto w-full object-contain md:h-72 lg:max-h-[400px] lg:object-cover"
-              loading="lazy"
-            />
+            <picture className="block">
+              <source media="(min-width: 1024px)" srcSet="/AliadosD.png" />
+              <img
+                src="/Aliados.png"
+                alt="Mensajeros entregando pedido PaseoCan"
+                className="h-auto w-full rounded-2xl object-contain md:h-72 lg:h-auto lg:w-full lg:object-contain"
+                loading="lazy"
+              />
+            </picture>
           </div>
         </Reveal>
 

@@ -21,7 +21,7 @@ export function Urgency() {
         <div className="mx-auto mb-3 flex size-10 items-center justify-center rounded-full bg-white/15 text-white ring-1 ring-white/20 md:mb-4 md:size-12"><AlertTriangle size={20} strokeWidth={2} /></div>
         <h2 className="text-[24px] font-extrabold leading-tight !text-white md:text-[42px]">Última oportunidad al precio de oferta</h2>
         <p className="mt-2 text-[15px] font-bold text-white md:mt-3 md:text-[17px]">Solo quedan 11 unidades al precio de oferta</p>
-        <p className="mt-1 text-[13px] font-medium text-white/90 md:text-[14px]">Cuando se acaben, el precio vuelve a $199.000 COP</p>
+        <p className="mt-1 text-[13px] font-medium text-white/90 md:text-[14px]">Cuando se acaben, el precio vuelve a $159.000 COP</p>
         <div className="mt-5 h-2 overflow-hidden rounded-full bg-black/25 ring-1 ring-white/15 md:mt-8 md:h-2.5">
           <div className="h-full rounded-full bg-[var(--color-warning)] transition-all duration-1000 ease-out" style={{ width: active ? "78%" : "0%" }} />
         </div>
