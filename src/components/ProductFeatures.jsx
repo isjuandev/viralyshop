@@ -91,7 +91,7 @@ export function ProductFeatures() {
           </div>
         </Reveal>
         <Reveal className="hidden lg:block">
-          <div className="grid items-center gap-10 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid items-stretch gap-8 lg:grid-cols-2">
             <div className="relative min-h-[768px] overflow-hidden rounded-3xl bg-[var(--color-dark)] shadow-[0_24px_70px_rgba(15,23,42,0.18)]">
               <video
                 ref={desktopVideoRef}
@@ -112,7 +112,8 @@ export function ProductFeatures() {
               </button>
             </div>
 
-            <div className="min-w-0">
+            <div className="flex min-h-[768px] min-w-0 flex-col justify-between rounded-3xl bg-white p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
+              <div>
               <span className="kicker">Detalles que importan</span>
               <h2 className="mt-4 text-[42px] font-extrabold leading-tight text-[var(--color-dark)]">
                 Diseño resistente, compra protegida y listo para el paseo diario.
@@ -120,6 +121,7 @@ export function ProductFeatures() {
               <p className="mt-4 max-w-[520px] text-[18px] leading-relaxed text-[var(--color-body)]">
                 La correa reúne practicidad, seguridad y respaldo para que el cambio se sienta desde el primer uso.
               </p>
+              </div>
               <div className="mt-8 grid gap-4">
                 {callouts.map(({ text, description, icon: Icon }) => (
                   <FeatureCallout

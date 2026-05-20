@@ -94,8 +94,9 @@ export function HowItWorks() {
           </div>
         </Reveal>
         <Reveal className="hidden lg:block">
-          <div className="grid items-center gap-10 lg:grid-cols-[0.9fr_1.1fr]">
-            <div className="min-w-0">
+          <div className="grid items-stretch gap-8 lg:grid-cols-2">
+            <div className="flex min-h-[768px] min-w-0 flex-col justify-between rounded-3xl bg-white p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
+              <div>
               <span className="kicker">Listo en menos de 5 pasos</span>
               <h2 className="mt-4 text-[42px] font-extrabold leading-tight text-[var(--color-dark)]">
                 Así de fácil es preparar PaseoCan antes de salir.
@@ -103,6 +104,7 @@ export function HowItWorks() {
               <p className="mt-4 max-w-[520px] text-[18px] leading-relaxed text-[var(--color-body)]">
                 En minutos lo armas, activas sus accesorios y sales a caminar sin estrés: más control para ti, más libertad para tus peludos.
               </p>
+              </div>
               <div className="mt-8 grid gap-4">
                 {callouts.map(({ text, description, icon: Icon }) => (
                   <FeatureCallout
