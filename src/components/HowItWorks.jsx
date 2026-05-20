@@ -95,6 +95,25 @@ export function HowItWorks() {
         </Reveal>
         <Reveal className="hidden lg:block">
           <div className="grid items-stretch gap-8 lg:grid-cols-2">
+            <div className="relative min-h-[768px] overflow-hidden rounded-3xl bg-[var(--color-dark)] shadow-[0_24px_70px_rgba(15,23,42,0.18)]">
+              <video
+                ref={desktopVideoRef}
+                src={howVideo}
+                className="absolute inset-0 h-full w-full object-cover"
+                autoPlay
+                muted
+                loop
+                playsInline
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
+              <button
+                type="button"
+                onClick={toggleSound}
+                className="absolute right-4 top-4 z-20 rounded-full bg-black/65 px-4 py-2 text-[12px] font-bold text-white backdrop-blur-sm"
+              >
+                {soundOn ? "🔇 Silenciar" : "🔊 Activar sonido"}
+              </button>
+            </div>
             <div className="flex min-h-[768px] min-w-0 flex-col justify-between rounded-3xl bg-white p-8 shadow-[0_24px_70px_rgba(15,23,42,0.08)]">
               <div>
               <span className="kicker">Listo en menos de 5 pasos</span>
@@ -115,26 +134,6 @@ export function HowItWorks() {
                   />
                 ))}
               </div>
-            </div>
-
-            <div className="relative min-h-[768px] overflow-hidden rounded-3xl bg-[var(--color-dark)] shadow-[0_24px_70px_rgba(15,23,42,0.18)]">
-              <video
-                ref={desktopVideoRef}
-                src={howVideo}
-                className="absolute inset-0 h-full w-full object-cover"
-                autoPlay
-                muted
-                loop
-                playsInline
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
-              <button
-                type="button"
-                onClick={toggleSound}
-                className="absolute right-4 top-4 z-20 rounded-full bg-black/65 px-4 py-2 text-[12px] font-bold text-white backdrop-blur-sm"
-              >
-                {soundOn ? "🔇 Silenciar" : "🔊 Activar sonido"}
-              </button>
             </div>
           </div>
         </Reveal>
