@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Flashlight, Handbag, Move3D, Waypoints } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const heroVideo = "/reviews/IMG_8881.MP4";
+const heroVideo = "https://sqnqkv68isi215qp.private.blob.vercel-storage.com/videos/IMG_8881.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfU1FuUWtWNjhJc2kyMTVxUCIsIm93bmVySWQiOiJ0ZWFtX1FOQ1dsMzFocEFYRnp1dVhkWFhWMUp1QyIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzc5MzcyMDU3OTU0LCJpYXQiOjE3NzkzMjg4NTgwNTV9.J-1vypn4XbuPCL_3N476DbP6Ubwwiq1tfKwKiAUurPQ&vercel-blob-signature=aZsfxeaSxHv_-iqC5C7z85ihF7-1Rjb9Hrx08C6tCD8";
 const callouts = [
   {
     text: "Anti-enredo",
@@ -34,18 +34,57 @@ export function ProblemSolution() {
   const mobileVideoRef = useRef(null);
   const desktopVideoRef = useRef(null);
   const [soundOn, setSoundOn] = useState(false);
+
+  const isVisible = (video) => {
+    if (!video) return false;
+    return video.offsetParent !== null;
+  };
+
+  const syncVideoAudio = () => {
+    const mobile = mobileVideoRef.current;
+    const desktop = desktopVideoRef.current;
+    if (!mobile || !desktop) return;
+
+    const mobileVisible = isVisible(mobile);
+    const desktopVisible = isVisible(desktop);
+
+    if (mobileVisible && !desktopVisible) {
+      mobile.muted = !soundOn;
+      desktop.muted = true;
+      return;
+    }
+
+    if (desktopVisible && !mobileVisible) {
+      desktop.muted = !soundOn;
+      mobile.muted = true;
+      return;
+    }
+
+    mobile.muted = true;
+    desktop.muted = true;
+  };
+
   const toggleSound = async () => {
-    const videos = [mobileVideoRef.current, desktopVideoRef.current].filter(Boolean);
-    if (!videos.length) return;
-    const nextMuted = !videos[0].muted;
-    videos.forEach((video) => {
-      video.muted = nextMuted;
-    });
-    setSoundOn(!nextMuted);
+    const nextSoundOn = !soundOn;
+    setSoundOn(nextSoundOn);
+    const mobile = mobileVideoRef.current;
+    const desktop = desktopVideoRef.current;
+    const activeVideo = isVisible(desktop) ? desktop : mobile;
+    const inactiveVideo = activeVideo === desktop ? mobile : desktop;
+    if (inactiveVideo) inactiveVideo.muted = true;
+    if (!activeVideo) return;
+    activeVideo.muted = !nextSoundOn;
     try {
-      await Promise.all(videos.map((video) => video.play()));
+      await activeVideo.play();
     } catch {}
   };
+
+  useEffect(() => {
+    syncVideoAudio();
+    const handleResize = () => syncVideoAudio();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [soundOn]);
 
   return (
     <section className="section-shell bg-[var(--color-surface)] py-10">
@@ -60,6 +99,7 @@ export function ProblemSolution() {
               muted
               loop
               playsInline
+              preload="auto"
             />
             <button
               type="button"
@@ -130,9 +170,10 @@ export function ProblemSolution() {
                 src={heroVideo}
                 className="absolute inset-0 h-full w-full object-cover"
                 autoPlay
-                muted
-                loop
-                playsInline
+              muted
+              loop
+              playsInline
+              preload="auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
               <button

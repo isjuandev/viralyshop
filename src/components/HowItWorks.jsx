@@ -1,8 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Battery, Handbag, Smile } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const howVideo = "/reviews/IMG_8880.MP4";
+const howVideo = "https://sqnqkv68isi215qp.private.blob.vercel-storage.com/videos/IMG_8880.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfU1FuUWtWNjhJc2kyMTVxUCIsIm93bmVySWQiOiJ0ZWFtX1FOQ1dsMzFocEFYRnp1dVhkWFhWMUp1QyIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzc5MzcyMDEyNzc2LCJpYXQiOjE3NzkzMjg4MTI4ODJ9.NWCTUbqKL5iadf1FouvtXDqknCgExA6RY17Cv9OxW5s&vercel-blob-signature=ha-TPskqhGDmT8pDe85tTzII8sB11WDmBjdeovC-A8I";
 const callouts = [
   {
     text: "1. Desmonta",
@@ -34,18 +34,57 @@ export function HowItWorks() {
   const mobileVideoRef = useRef(null);
   const desktopVideoRef = useRef(null);
   const [soundOn, setSoundOn] = useState(false);
+
+  const isVisible = (video) => {
+    if (!video) return false;
+    return video.offsetParent !== null;
+  };
+
+  const syncVideoAudio = () => {
+    const mobile = mobileVideoRef.current;
+    const desktop = desktopVideoRef.current;
+    if (!mobile || !desktop) return;
+
+    const mobileVisible = isVisible(mobile);
+    const desktopVisible = isVisible(desktop);
+
+    if (mobileVisible && !desktopVisible) {
+      mobile.muted = !soundOn;
+      desktop.muted = true;
+      return;
+    }
+
+    if (desktopVisible && !mobileVisible) {
+      desktop.muted = !soundOn;
+      mobile.muted = true;
+      return;
+    }
+
+    mobile.muted = true;
+    desktop.muted = true;
+  };
+
   const toggleSound = async () => {
-    const videos = [mobileVideoRef.current, desktopVideoRef.current].filter(Boolean);
-    if (!videos.length) return;
-    const nextMuted = !videos[0].muted;
-    videos.forEach((video) => {
-      video.muted = nextMuted;
-    });
-    setSoundOn(!nextMuted);
+    const nextSoundOn = !soundOn;
+    setSoundOn(nextSoundOn);
+    const mobile = mobileVideoRef.current;
+    const desktop = desktopVideoRef.current;
+    const activeVideo = isVisible(desktop) ? desktop : mobile;
+    const inactiveVideo = activeVideo === desktop ? mobile : desktop;
+    if (inactiveVideo) inactiveVideo.muted = true;
+    if (!activeVideo) return;
+    activeVideo.muted = !nextSoundOn;
     try {
-      await Promise.all(videos.map((video) => video.play()));
+      await activeVideo.play();
     } catch {}
   };
+
+  useEffect(() => {
+    syncVideoAudio();
+    const handleResize = () => syncVideoAudio();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [soundOn]);
 
   return (
     <section className="section-shell bg-[var(--color-white)]">
@@ -65,6 +104,7 @@ export function HowItWorks() {
               muted
               loop
               playsInline
+              preload="auto"
             />
             <button
               type="button"
@@ -101,9 +141,10 @@ export function HowItWorks() {
                 src={howVideo}
                 className="absolute inset-0 h-full w-full object-cover"
                 autoPlay
-                muted
-                loop
-                playsInline
+              muted
+              loop
+              playsInline
+              preload="auto"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/35 via-black/5 to-transparent" />
               <button
