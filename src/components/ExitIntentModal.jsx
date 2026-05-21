@@ -93,7 +93,7 @@ export function ExitIntentModal() {
           ¡Espera! Tu descuento está a punto de expirar
         </h3>
         <p className="mt-3 text-sm leading-relaxed text-[#4B5563] md:text-base">
-          Tienes reservado un descuento de 45%. Si sales ahora, lo pierdes.
+          Tienes reservado un descuento de 31%. Si sales ahora, lo pierdes.
         </p>
 
         <p className="mt-4 text-sm font-extrabold uppercase tracking-[0.08em] text-[#DC2626]">
@@ -102,7 +102,7 @@ export function ExitIntentModal() {
 
         <button
           onClick={handlePrimaryClick}
-          className="mt-5 inline-flex h-14 w-full items-center justify-center rounded-xl bg-[#1E90FF] px-4 text-[15px] font-extrabold uppercase tracking-[0.05em] text-white transition hover:scale-[1.01]"
+          className="mt-5 cta-jump inline-flex h-14 w-full items-center justify-center rounded-xl bg-[#1E90FF] px-4 text-[15px] font-extrabold uppercase tracking-[0.05em] text-white transition hover:scale-[1.01]"
         >
           QUIERO MI DESCUENTO → $109.000
         </button>

@@ -440,7 +440,7 @@ export function OrderForm() {
             <div className="hidden md:flex md:justify-center">
               <button
                 type="submit"
-                className="btn-whatsapp items-center justify-center gap-2 px-8 py-4 text-[15px] font-extrabold md:w-auto"
+                className="btn-whatsapp cta-jump items-center justify-center gap-2 px-8 py-4 text-[15px] font-extrabold md:w-auto"
               >
                 <FaWhatsapp size={20} />
                 ENVIAR PEDIDO POR WHATSAPP

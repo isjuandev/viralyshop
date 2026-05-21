@@ -160,7 +160,7 @@ function PriceBlock({ onCta }) {
       <button
         aria-label="Compra ahora PaseoCan con envío gratis"
         onClick={onCta}
-        className="btn-primary mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-[15px] font-extrabold tracking-wide transition-transform active:scale-[0.98]"
+        className="btn-primary cta-jump mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-[15px] font-extrabold tracking-wide transition-transform active:scale-[0.98]"
       >
         <ShoppingCart size={18} strokeWidth={2.5} />
         COMPRA AHORA · ENVÍO GRATIS

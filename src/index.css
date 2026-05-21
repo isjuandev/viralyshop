@@ -110,6 +110,22 @@ img:not([class*="h-"]) { height: auto; }
 
 @keyframes sticky-slide-up { from { transform: translateY(100%); } to { transform: translateY(0); } }
 @keyframes bounce-arrow { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+@keyframes cta-jump {
+  0%, 86%, 100% { transform: translateY(0); }
+  90% { transform: translateY(-6px); }
+  94% { transform: translateY(0); }
+  97% { transform: translateY(-3px); }
+}
+
+.cta-jump {
+  animation: cta-jump 2s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cta-jump {
+    animation: none;
+  }
+}
 
 @media (min-width: 768px) {
   .section-shell { padding: 80px 32px; }

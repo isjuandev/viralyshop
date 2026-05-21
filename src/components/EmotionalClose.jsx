@@ -68,7 +68,7 @@ export function EmotionalClose() {
         </div>
 
         <div className="mx-auto mt-8 max-w-[390px] text-center lg:max-w-[400px]">
-          <button onClick={scrollToForm} className="btn-primary w-full lg:w-full">
+          <button onClick={scrollToForm} className="btn-primary w-full lg:w-full cta-jump">
             Quiero el mío ahora →
           </button>
           <p className="microcopy">
