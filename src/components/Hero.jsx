@@ -21,27 +21,27 @@ import { ReviewsCarousel } from "./SocialProof";
 
 const gallery = [
   {
-    src: "/ChatGPT Image 15 may 2026, 02_40_51 a.m..png",
+    src: "/Carrusel-1.png",
     label: "Correa retráctil doble PaseoCan",
   },
   {
-    src: "/ChatGPT Image 15 may 2026, 02_07_56 a.m..png",
-    label: "Paseo con dos perros usando PaseoCan",
-  },
-  {
-    src: "/ChatGPT Image 15 may 2026, 02_10_16 a.m..png",
-    label: "Beneficios principales de la correa doble",
-  },
-  {
-    src: "/ChatGPT Image 15 may 2026, 02_09_34 a.m..png",
+    src: "/Carrusel-2.png",
     label: "Antes y después del paseo sin enredos",
   },
   {
-    src: "/ChatGPT Image 15 may 2026, 02_15_49 a.m..png",
+    src: "/Carrusel-3.png",
+    label: "Paseo con dos perros usando PaseoCan",
+  },
+  {
+    src: "/Carrusel-4.png",
+    label: "Beneficios principales de la correa doble",
+  },
+  {
+    src: "/Carrusel-5.png",
     label: "Sistema de giro 360 grados",
   },
   {
-    src: "/ChatGPT Image 15 may 2026, 02_49_19 a.m..png",
+    src: "/Carrusel-6.png",
     label: "Cliente usando la correa PaseoCan",
   },
 ];

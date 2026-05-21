@@ -4,8 +4,9 @@ import { scrollToForm } from "../utils/scroll";
 
 const reviewSlides = [
   "/reviews/testimonio.png",
-  "/reviews/testimonio2.png",
+  "/reviews/testimonio3.png",
   "/reviews/testimonio4.png",
+  "/reviews/testimonio2.png",
 ];
 
 export function EmotionalClose() {
