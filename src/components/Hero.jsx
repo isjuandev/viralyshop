@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   ArrowRight,
@@ -9,12 +9,15 @@ import {
   Star,
   Truck,
   Zap,
+  CheckCircle2,
 } from "lucide-react";
 import { BASE_PRICE, COMPARE_PRICE } from "../constants";
 import { formatPrice } from "../utils/format";
 import { scrollToForm } from "../utils/scroll";
 import { Reveal } from "./Reveal";
 import { ReviewsCarousel } from "./SocialProof";
+
+/* ─── Data ─────────────────────────────────────────────────── */
 
 const gallery = [
   {
@@ -43,246 +46,349 @@ const gallery = [
   },
 ];
 
-const trustItems = [
-  { icon: Truck, text: "Envío gratis" },
-  { icon: Banknote, text: "Pago contra entrega" },
-  { icon: ShieldCheck, text: "30 días garantía" },
-  { icon: Zap, text: "Despacho 24h" },
+const BULLET_POINTS = [
+  "Sin enredos gracias al giro 360°",
+  "Freno de seguridad instantáneo",
+  "Resistente hasta 50 kg por perro",
 ];
 
-function addBusinessDays(date, businessDays) {
+/* ─── Helpers ───────────────────────────────────────────────── */
+
+function addBusinessDays(date, days) {
   const result = new Date(date);
-  let remaining = businessDays;
+  let remaining = days;
   while (remaining > 0) {
     result.setDate(result.getDate() + 1);
-    const day = result.getDay();
-    if (day !== 0 && day !== 6) remaining -= 1;
+    const dow = result.getDay();
+    if (dow !== 0 && dow !== 6) remaining--;
   }
   return result;
 }
 
-function formatShippingDate(date) {
-  return date.toLocaleDateString("es-CO", {
-    day: "numeric",
-    month: "short",
-  });
+function fmtDate(date) {
+  return date.toLocaleDateString("es-CO", { day: "numeric", month: "short" });
 }
 
-export function Hero() {
-  const [active, setActive] = useState(0);
-  const current = gallery[active];
-  const move = (step) =>
-    setActive((value) => (value + step + gallery.length) % gallery.length);
+/* ─── Sub-components ────────────────────────────────────────── */
 
+function AnnouncementBar() {
   return (
-    <section id="product" className="scroll-mt-10 bg-[var(--color-white)]">
-      <div className="sticky top-0 z-[1000] flex h-11 items-center justify-center bg-black px-3 text-center text-[13px] font-bold text-white shadow-sm">
-        <span>🐾 ENVÍO GRATIS en todas las órdenes</span>
-      </div>
-
-      <div className="container-shell max-w-full overflow-hidden px-3 pb-12 pt-3 md:px-8 md:py-12 lg:grid lg:max-w-[1200px] lg:grid-cols-[53%_47%] lg:items-stretch lg:gap-7 lg:px-6 lg:py-10">
-        <Reveal className="min-w-0 lg:sticky lg:top-14">
-          <ProductGallery
-            current={current}
-            active={active}
-            move={move}
-            setActive={setActive}
-          />
-        </Reveal>
-
-        <Reveal className="min-w-0 mt-6 lg:mt-0 lg:flex lg:min-h-[596px] lg:max-w-[520px] lg:flex-col lg:justify-between">
-          <div>
-            <h1 className="text-[34px] font-extrabold leading-[1.02] text-[var(--color-dark)] md:text-[46px] lg:text-[44px] lg:leading-[1.04]">
-              Correa retráctil doble PaseoCan
-            </h1>
-            <div className="mt-3 flex flex-wrap items-center gap-2 text-[13px] font-semibold">
-              <span className="inline-flex gap-0.5 text-[var(--color-warning)]">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={14} fill="currentColor" strokeWidth={2} />
-                ))}
-              </span>
-              <span className="text-slate-500">
-                349 Valoraciones | 1.200 Ventas
-              </span>
-            </div>
-          </div>
-
-          <div className="card-surface mt-4 p-4 md:mt-5 md:p-5 lg:mt-5 lg:p-5">
-            <div className="flex flex-wrap items-end gap-2.5 md:gap-3 lg:gap-2.5">
-              <span className="text-[30px] font-extrabold leading-none text-black md:text-[40px] lg:text-[38px]">
-                ${formatPrice(BASE_PRICE)} COP
-              </span>
-              <span className="pb-0.5 text-[16px] font-bold text-slate-400 line-through md:pb-1 md:text-[20px] lg:text-[18px]">
-                ${formatPrice(COMPARE_PRICE)}
-              </span>
-              <span
-                className="rounded px-2 py-1 text-[10px] font-bold uppercase tracking-[0.03em] text-white md:px-2.5 md:text-[11px]"
-                style={{ background: "var(--color-primary)" }}
-              >
-                OFERTA HOY
-              </span>
-            </div>
-
-            <button
-              aria-label="Compra ahora PaseoCan con envío gratis"
-              onClick={scrollToForm}
-              className="btn-primary mt-4 flex w-full items-center justify-center gap-1.5 px-3 py-2.5 text-[14px] md:mt-5 md:gap-2 md:py-3 md:text-[15px] lg:mt-4 lg:min-h-[54px] lg:w-full"
-            >
-              <ShoppingCart className="shrink-0" size={17} strokeWidth={2.5} />
-              <span className="flex flex-col items-start leading-tight text-left">
-                <span className="font-extrabold">COMPRA AHORA</span>
-                <span className="text-[10px] font-medium opacity-90 md:text-[11px]">
-                  Llévalo con envío gratis
-                </span>
-              </span>
-            </button>
-            <p className="microcopy mt-2 text-[11px] md:text-[12px]">
-              <ShieldCheck size={11} strokeWidth={2} /> Sin tarjeta · Pago
-              contra entrega · Sin riesgo
-            </p>
-          </div>
-
-          <Reveal className="mt-6 lg:mt-5">
-            <ShippingTimeline />
-          </Reveal>
-
-          <ReviewsCarousel
-            className="mt-4 max-w-full overflow-hidden lg:hidden"
-            cardClassName="min-w-0 w-full shrink-0 snap-center"
-            insetControls
-          />
-        </Reveal>
-      </div>
-      <HeroReviewsSection />
-    </section>
+    <div className="sticky top-0 z-[1000] flex h-10 items-center justify-center gap-2 bg-black px-4 text-[12px] font-bold tracking-wide text-white md:text-[13px]">
+      <Truck size={14} className="shrink-0" />
+      <span>ENVÍO GRATIS en todas las órdenes · Pago contra entrega</span>
+    </div>
   );
 }
 
-function HeroReviewsSection() {
+function StarRating({ count = 5, reviews, sales }) {
   return (
-    <section className="hidden bg-[var(--color-white)] px-6 pb-16 lg:block">
-      <div className="container-shell max-w-[1000px]">
-        <Reveal className="mx-auto max-w-[720px] text-center">
-          <span className="kicker">Reseñas verificadas</span>
-          <h2 className="mt-3 text-[32px] font-extrabold leading-tight text-[var(--color-dark)]">
-            Dueños de perros que ya pasean con más control
-          </h2>
-          <p className="mt-2 text-[16px] text-[var(--color-muted)]">
-            Historias reales de clientes en Colombia usando PaseoCan en su rutina diaria.
-          </p>
-        </Reveal>
-        <ReviewsCarousel
-          className="mx-auto mt-8 max-w-[900px] overflow-hidden"
-          cardClassName="min-w-[280px] flex-1 snap-center"
-          insetControls
-        />
-      </div>
-    </section>
-  );
-}
-
-function ProductGallery({ current, active, move, setActive }) {
-  return (
-    <div className="card-surface overflow-hidden p-2 md:p-3 lg:grid lg:grid-cols-[70px_1fr] lg:gap-3 lg:p-3">
-      <div className="relative aspect-square w-full overflow-hidden rounded-xl bg-[var(--color-surface)] md:max-h-[500px] lg:order-2 lg:max-h-none lg:min-h-[520px]">
-        <img
-          src={current.src}
-          alt={current.label}
-          className="h-full w-full object-contain md:object-cover lg:object-contain"
-          fetchPriority={active === 0 ? "high" : "auto"}
-          loading={active === 0 ? "eager" : "lazy"}
-        />
-        <button
-          aria-label="Imagen anterior"
-          onClick={() => move(-1)}
-          className="absolute left-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[var(--color-dark)] shadow-md lg:size-10"
-        >
-          <ArrowLeft size={20} strokeWidth={2} />
-        </button>
-        <button
-          aria-label="Imagen siguiente"
-          onClick={() => move(1)}
-          className="absolute right-3 top-1/2 flex size-11 -translate-y-1/2 items-center justify-center rounded-full bg-white/95 text-[var(--color-dark)] shadow-md lg:size-10"
-        >
-          <ArrowRight size={20} strokeWidth={2} />
-        </button>
-      </div>
-      <div className="mt-3 grid grid-cols-6 gap-2 lg:order-1 lg:mt-0 lg:grid-cols-1 lg:self-start">
-        {gallery.map((item, index) => (
-          <button
-            key={item.label}
-            aria-label={item.label}
-            onClick={() => setActive(index)}
-            className={`aspect-square rounded-lg border bg-[var(--color-surface)] p-1 transition lg:size-[60px] ${active === index ? "border-[var(--color-primary)] ring-2 ring-[var(--color-primary)]/20" : "border-[var(--color-border)]"}`}
-          >
-            <img
-              src={item.src}
-              alt=""
-              className="h-full w-full rounded-md object-contain"
-              loading="lazy"
-            />
-          </button>
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="flex gap-0.5 text-amber-400">
+        {Array.from({ length: count }).map((_, i) => (
+          <Star key={i} size={14} fill="currentColor" strokeWidth={0} />
         ))}
+      </span>
+      <span className="text-[13px] text-slate-500">
+        {reviews} valoraciones · {sales} ventas
+      </span>
+    </div>
+  );
+}
+
+function TrustBadges() {
+  const items = [
+    { icon: Truck, label: "Envío gratis" },
+    { icon: Banknote, label: "Contra entrega" },
+    { icon: ShieldCheck, label: "30 días garantía" },
+    { icon: Zap, label: "Despacho 24h" },
+  ];
+  return (
+    <div className="grid grid-cols-4 gap-2">
+      {items.map(({ icon: Icon, label }) => (
+        <div
+          key={label}
+          className="flex flex-col items-center gap-1.5 rounded-xl border border-slate-100 bg-slate-50 py-3 text-center"
+        >
+          <Icon size={18} className="text-slate-700" strokeWidth={1.8} />
+          <span className="text-[11px] font-semibold leading-tight text-slate-600">
+            {label}
+          </span>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function PriceBlock({ onCta }) {
+  const discount = Math.round(
+    ((COMPARE_PRICE - BASE_PRICE) / COMPARE_PRICE) * 100
+  );
+
+  return (
+    <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm md:p-5">
+      {/* Price row */}
+      <div className="flex items-end gap-3">
+        <span className="text-[32px] font-extrabold leading-none text-slate-900 md:text-[38px]">
+          ${formatPrice(BASE_PRICE)}
+          <span className="ml-1 text-[18px] font-bold text-slate-500">COP</span>
+        </span>
+        <div className="mb-1 flex flex-col items-start">
+          <span className="text-[13px] text-slate-400 line-through">
+            ${formatPrice(COMPARE_PRICE)}
+          </span>
+          <span className="rounded-md bg-red-100 px-2 py-0.5 text-[11px] font-bold text-red-600">
+            -{discount}% HOY
+          </span>
+        </div>
       </div>
-      <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[12px] font-semibold text-[var(--color-body)] lg:col-span-2 lg:order-[-1] lg:mt-0">
-        <span className="rounded-lg bg-[var(--color-primary-light)] p-2 lg:py-3">
-          <Lock
-            className="mx-auto mb-1 text-[var(--color-primary)]"
-            size={18}
-          />
-          Control
-        </span>
-        <span className="rounded-lg bg-[var(--color-success-light)] p-2 lg:py-3">
-          <ShieldCheck
-            className="mx-auto mb-1 text-[var(--color-success)]"
-            size={18}
-          />
-          Garantía
-        </span>
-        <span className="rounded-lg bg-[var(--color-primary-light)] p-2 lg:py-3">
-          <Truck
-            className="mx-auto mb-1 text-[var(--color-primary)]"
-            size={18}
-          />
-          Envío Gratis
-        </span>
-      </div>
+
+      {/* Bullet points */}
+      <ul className="mt-4 space-y-2">
+        {BULLET_POINTS.map((pt) => (
+          <li key={pt} className="flex items-center gap-2 text-[13px] text-slate-700">
+            <CheckCircle2
+              size={15}
+              className="shrink-0 text-emerald-500"
+              strokeWidth={2.5}
+            />
+            {pt}
+          </li>
+        ))}
+      </ul>
+
+      {/* CTA */}
+      <button
+        aria-label="Compra ahora PaseoCan con envío gratis"
+        onClick={onCta}
+        className="btn-primary mt-5 flex w-full items-center justify-center gap-2 rounded-xl py-4 text-[15px] font-extrabold tracking-wide transition-transform active:scale-[0.98]"
+      >
+        <ShoppingCart size={18} strokeWidth={2.5} />
+        COMPRA AHORA · ENVÍO GRATIS
+      </button>
+
+      <p className="mt-2.5 flex items-center justify-center gap-1 text-center text-[11px] text-slate-400">
+        <Lock size={10} strokeWidth={2} />
+        Sin tarjeta · Pago contra entrega · Sin riesgo
+      </p>
     </div>
   );
 }
 
 function ShippingTimeline() {
   const now = new Date();
-  const orderDate = formatShippingDate(now);
-  const dispatchDate = formatShippingDate(addBusinessDays(now, 2));
-  const deliveryDate = formatShippingDate(addBusinessDays(now, 4));
-
   const steps = [
-    { icon: ShoppingCart, date: orderDate, label: "Recibimos tu pedido" },
-    { icon: Truck, date: dispatchDate, label: "Despachamos" },
-    { icon: ShieldCheck, date: deliveryDate, label: "Lo entregamos" },
+    { icon: ShoppingCart, date: fmtDate(now), label: "Pedido recibido" },
+    { icon: Zap, date: fmtDate(addBusinessDays(now, 1)), label: "Procesamos" },
+    { icon: Truck, date: fmtDate(addBusinessDays(now, 2)), label: "Despachamos" },
+    { icon: ShieldCheck, date: fmtDate(addBusinessDays(now, 4)), label: "Entregamos" },
   ];
 
   return (
-    <div className="card-surface p-4 lg:p-4">
-      <div className="grid grid-cols-3 items-start gap-2 text-center lg:gap-4">
-        {steps.map(({ icon: Icon, date, label }, index) => (
-          <div key={label} className="relative px-1">
-            {index < steps.length - 1 ? (
-              <span className="absolute left-[58%] top-5 h-px w-[84%] border-t-2 border-dashed border-slate-300" />
-            ) : null}
-            <span className="mx-auto flex size-10 items-center justify-center rounded-full bg-slate-900 text-white lg:size-11">
-              <Icon className="lg:size-5" size={18} strokeWidth={2.2} />
+    <div className="rounded-2xl border border-slate-100 bg-slate-50 p-4">
+      <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+        Estimado de entrega
+      </p>
+      <div className="relative grid grid-cols-4 gap-1">
+        {/* connector line */}
+        <span className="absolute left-[12.5%] right-[12.5%] top-4 h-px bg-slate-200" />
+        {steps.map(({ icon: Icon, date, label }, i) => (
+          <div key={label} className="relative z-10 flex flex-col items-center text-center">
+            <span
+              className={`flex size-8 items-center justify-center rounded-full ${
+                i === 0
+                  ? "bg-slate-900 text-white"
+                  : "bg-white text-slate-400 border border-slate-200"
+              }`}
+            >
+              <Icon size={14} strokeWidth={2} />
             </span>
-            <p className="mt-2 whitespace-nowrap text-[12px] font-bold uppercase tracking-[0.04em] text-[var(--color-dark)] lg:text-[12px]">
+            <p className="mt-1.5 text-[10px] font-bold uppercase tracking-wide text-slate-700">
               {date}
             </p>
-            <p className="mt-1 whitespace-nowrap text-[12px] font-medium text-[var(--color-body)] lg:text-[12px]">
-              {label}
-            </p>
+            <p className="mt-0.5 text-[10px] text-slate-500 leading-tight">{label}</p>
           </div>
         ))}
       </div>
     </div>
+  );
+}
+
+function ProductGallery({ current, active, move, setActive }) {
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Main image */}
+      <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-slate-50 md:aspect-[4/3] lg:aspect-square">
+        <img
+          src={current.src}
+          alt={current.label}
+          className="h-full w-full object-contain transition-opacity duration-200"
+          fetchPriority={active === 0 ? "high" : "auto"}
+          loading={active === 0 ? "eager" : "lazy"}
+        />
+
+        {/* Nav arrows */}
+        <button
+          aria-label="Imagen anterior"
+          onClick={() => move(-1)}
+          className="absolute left-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-md backdrop-blur-sm transition hover:bg-white"
+        >
+          <ArrowLeft size={18} strokeWidth={2} />
+        </button>
+        <button
+          aria-label="Imagen siguiente"
+          onClick={() => move(1)}
+          className="absolute right-3 top-1/2 flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-slate-800 shadow-md backdrop-blur-sm transition hover:bg-white"
+        >
+          <ArrowRight size={18} strokeWidth={2} />
+        </button>
+
+        {/* Dot indicator (mobile only) */}
+        <div className="absolute bottom-3 left-1/2 flex -translate-x-1/2 gap-1.5 lg:hidden">
+          {gallery.map((_, i) => (
+            <button
+              key={i}
+              aria-label={`Imagen ${i + 1}`}
+              onClick={() => setActive(i)}
+              className={`size-2 rounded-full transition-all ${
+                i === active ? "w-5 bg-slate-800" : "bg-slate-300"
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* Thumbnails grid */}
+      <div className="grid grid-cols-6 gap-2 lg:grid-cols-6">
+        {gallery.map((item, i) => (
+          <button
+            key={item.label}
+            aria-label={item.label}
+            onClick={() => setActive(i)}
+            className={`aspect-square overflow-hidden rounded-lg border-2 bg-slate-50 transition ${
+              i === active
+                ? "border-slate-800"
+                : "border-transparent hover:border-slate-300"
+            }`}
+          >
+            <img
+              src={item.src}
+              alt=""
+              className="h-full w-full object-contain"
+              loading="lazy"
+            />
+          </button>
+        ))}
+      </div>
+
+      {/* Feature badges — desktop only, inside gallery column */}
+      <div className="hidden grid-cols-3 gap-2 lg:grid">
+        {[
+          { icon: Lock, label: "Control total", color: "text-blue-600 bg-blue-50" },
+          { icon: ShieldCheck, label: "30 días garantía", color: "text-emerald-600 bg-emerald-50" },
+          { icon: Truck, label: "Envío gratis", color: "text-violet-600 bg-violet-50" },
+        ].map(({ icon: Icon, label, color }) => (
+          <div
+            key={label}
+            className={`flex flex-col items-center gap-1 rounded-xl py-3 text-center text-[11px] font-semibold ${color}`}
+          >
+            <Icon size={16} strokeWidth={2} />
+            {label}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main Export ───────────────────────────────────────────── */
+
+export function Hero() {
+  const [active, setActive] = useState(0);
+  const move = (step) =>
+    setActive((v) => (v + step + gallery.length) % gallery.length);
+
+  return (
+    <section id="product" className="scroll-mt-10">
+      <AnnouncementBar />
+
+      {/* ── Main hero grid ── */}
+      <div className="mx-auto max-w-[1200px] px-4 pb-12 pt-6 md:px-6 md:pt-8 lg:grid lg:grid-cols-[52%_48%] lg:items-start lg:gap-10 lg:px-8 lg:pt-10 lg:pb-16">
+
+        {/* Left: Gallery */}
+        <Reveal className="lg:sticky lg:top-[56px]">
+          <ProductGallery
+            current={gallery[active]}
+            active={active}
+            move={move}
+            setActive={setActive}
+          />
+        </Reveal>
+
+        {/* Right: Product info */}
+        <Reveal className="mt-6 flex flex-col gap-5 lg:mt-0">
+
+          {/* Header */}
+          <div>
+            <p className="mb-2 text-[12px] font-bold uppercase tracking-widest text-[var(--color-primary)]">
+              PaseoCan · Correa Premium
+            </p>
+            <h1 className="text-[30px] font-extrabold leading-[1.05] text-slate-900 md:text-[40px] lg:text-[36px] xl:text-[42px]">
+              Correa retráctil doble para dos perros
+            </h1>
+            <div className="mt-3">
+              <StarRating reviews="349" sales="1.200" />
+            </div>
+          </div>
+
+          {/* Price + CTA */}
+          <PriceBlock onCta={scrollToForm} />
+
+          {/* Trust badges */}
+          <TrustBadges />
+
+          {/* Shipping timeline */}
+          <ShippingTimeline />
+
+          {/* Reviews carousel — mobile only */}
+          <div className="lg:hidden">
+            <p className="mb-3 text-[11px] font-bold uppercase tracking-widest text-slate-400">
+              Lo que dicen nuestros clientes
+            </p>
+            <ReviewsCarousel
+              cardClassName="min-w-0 w-full shrink-0 snap-center"
+              insetControls
+            />
+          </div>
+        </Reveal>
+      </div>
+
+      {/* Reviews section — desktop only */}
+      <DesktopReviewsSection />
+    </section>
+  );
+}
+
+function DesktopReviewsSection() {
+  return (
+    <section className="hidden border-t border-slate-100 bg-slate-50 px-6 pb-20 pt-16 lg:block">
+      <div className="mx-auto max-w-[1000px]">
+        <Reveal className="mx-auto max-w-[620px] text-center">
+          <p className="text-[11px] font-bold uppercase tracking-widest text-[var(--color-primary)]">
+            Reseñas verificadas
+          </p>
+          <h2 className="mt-3 text-[30px] font-extrabold leading-tight text-slate-900">
+            Dueños de perros que ya pasean con más control
+          </h2>
+          <p className="mt-2 text-[16px] text-slate-500">
+            Historias reales de clientes en Colombia usando PaseoCan a diario.
+          </p>
+        </Reveal>
+        <ReviewsCarousel
+          className="mt-10 overflow-hidden"
+          cardClassName="min-w-[280px] flex-1 snap-center"
+          insetControls
+        />
+      </div>
+    </section>
   );
 }
