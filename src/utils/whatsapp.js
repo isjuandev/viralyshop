@@ -3,20 +3,35 @@ import { PRODUCT_NAME, WHATSAPP_NUMBER } from "../constants";
 export function buildMessage({
   nombre,
   telefono,
+  tipoEntrega,
   departamento,
   ciudad,
+  direccion,
+  barrio,
+  cedula,
 }) {
-  return `¡Buenas! ${"\uD83D\uDC4B"} Quiero confirmar mi compra ${"\uD83D\uDED2"}
+  const isOfficePickup = tipoEntrega === "oficina";
+  const cityLine = `📍 *Ciudad:* ${ciudad}, ${departamento}`;
+  const addressBase = [direccion, barrio].filter(Boolean).join(", ");
+  const addressLine = !isOfficePickup
+    ? `🏠 *Dirección:* ${addressBase}`
+    : `🏢 *Entrega:* Recoger en oficina`;
+  const idLine = isOfficePickup && cedula
+    ? `🪪 *Cédula:* ${cedula}`
+    : null;
 
-Me llamo ${nombre}
-Mi WhatsApp es ${telefono}
+  const conditionalLines = [addressLine, idLine].filter(Boolean).join("\n");
 
-Pedí la ${PRODUCT_NAME} ${"\uD83D\uDC3E"}
-Para enviar a ${ciudad}, ${departamento} ${"\uD83D\uDCCD"}
+  return `Hola 👋 Quiero confirmar mi compra:
 
-Pago contra entrega cuando llegue ${"\uD83D\uDCB5"}
+🙋 *Nombre:* ${nombre}
+📱 *WhatsApp:* ${telefono}
+🐾 *Producto:* ${PRODUCT_NAME}
+${cityLine}
+${conditionalLines}
+💵 *Pago:* Contra entrega
 
-¡Gracias!`;
+✅ ¡Gracias!`;
 }
 
 export function openWhatsApp(message = "") {
