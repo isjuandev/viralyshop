@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Flashlight, Handbag, Move3D, Waypoints } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const heroVideo = "https://sqnqkv68isi215qp.private.blob.vercel-storage.com/videos/IMG_8881.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfU1FuUWtWNjhJc2kyMTVxUCIsIm93bmVySWQiOiJ0ZWFtX1FOQ1dsMzFocEFYRnp1dVhkWFhWMUp1QyIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzc5NTczMjA0NzEzLCJpYXQiOjE3Nzk1MzAwMDQ4OTh9.My8QUkm0ezt6vXta91m3REnXThBERlHQLB8I-Em982M&vercel-blob-signature=d_a0Mk4LOUGhUpW23y_lHeroxuWuC0AV9W_X4dwRguc";
+const heroVideo = "https://cdn.nexobite.com/viralyshop/IMG_8881.webm";
 const callouts = [
   {
     text: "Anti-enredo",

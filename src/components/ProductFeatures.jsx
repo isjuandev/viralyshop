@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Crown, ShieldCheck, ShieldCog, ShoppingCart } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const featureVideo = "https://sqnqkv68isi215qp.private.blob.vercel-storage.com/videos/IMG_8879.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfU1FuUWtWNjhJc2kyMTVxUCIsIm93bmVySWQiOiJ0ZWFtX1FOQ1dsMzFocEFYRnp1dVhkWFhWMUp1QyIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzc5NTczMTUxNzYxLCJpYXQiOjE3Nzk1Mjk5NTE5Mzl9.T6_fqLTXFN76A82-MRdRF0rz1sq_hN_-OjUQo5T-4us&vercel-blob-signature=q6TT147MvZe0FQ3KWxCIm4Qm-FJTXX_3JHnXPXSDI7Q";
+const featureVideo = "https://cdn.nexobite.com/viralyshop/IMG_8879.webm";
 const callouts = [
   {
     text: "Envío gratis",

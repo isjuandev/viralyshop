@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowLeft, Battery, Handbag, Smile } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const howVideo = "https://sqnqkv68isi215qp.private.blob.vercel-storage.com/videos/IMG_8880.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfU1FuUWtWNjhJc2kyMTVxUCIsIm93bmVySWQiOiJ0ZWFtX1FOQ1dsMzFocEFYRnp1dVhkWFhWMUp1QyIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzc5NTczMTkxNDAzLCJpYXQiOjE3Nzk1Mjk5OTE1ODF9.JKIdB3DsChFLyFWIMQIMlUGn8bJ-9UJx7Owr_SQaV8U&vercel-blob-signature=lbIh-5gwkasspCc0LR42xy4utTr2nvJjf9DMQGm9XFM";
+const howVideo = "https://cdn.nexobite.com/viralyshop/IMG_8880.webm";
 const callouts = [
   {
     text: "1. Desmonta",
