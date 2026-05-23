@@ -1,30 +1,28 @@
 import { PRODUCT_NAME, WHATSAPP_NUMBER } from "../constants";
-import { formatPrice } from "./format";
 
 export function buildMessage({
   nombre,
   telefono,
   departamento,
   ciudad,
-  cantidad,
-  total,
 }) {
-  return `
-🐾 *NUEVO PEDIDO - PaseoCan*
+  return `¡Buenas! ${"\uD83D\uDC4B"} Quiero confirmar mi compra ${"\uD83D\uDED2"}
 
-👤 Nombre: ${nombre}
-📱 WhatsApp: ${telefono}
-📍 Departamento: ${departamento}
-🏙️ Ciudad: ${ciudad}
-📦 Cantidad: ${cantidad} unidad(es)
-💰 Total a cobrar: $${formatPrice(total)} COP
+Me llamo ${nombre}
+Mi WhatsApp es ${telefono}
 
-✅ Forma de pago: Contra entrega
-📋 Producto: ${PRODUCT_NAME}
-`.trim();
+Pedí la ${PRODUCT_NAME} ${"\uD83D\uDC3E"}
+Para enviar a ${ciudad}, ${departamento} ${"\uD83D\uDCCD"}
+
+Pago contra entrega cuando llegue ${"\uD83D\uDCB5"}
+
+¡Gracias!`;
 }
 
 export function openWhatsApp(message = "") {
-  const suffix = message ? `?text=${encodeURIComponent(message)}` : "";
-  window.open(`https://wa.me/${WHATSAPP_NUMBER}${suffix}`, "_blank");
+  const normalizedMessage = message.replace(/\n/g, "\r\n");
+  const suffix = normalizedMessage
+    ? `?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(normalizedMessage)}`
+    : `?phone=${WHATSAPP_NUMBER}`;
+  window.open(`https://api.whatsapp.com/send${suffix}`, "_blank");
 }
