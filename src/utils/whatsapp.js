@@ -6,7 +6,6 @@ export function buildMessage({
   telefono,
   departamento,
   ciudad,
-  color,
   cantidad,
   total,
 }) {
@@ -17,12 +16,11 @@ export function buildMessage({
 📱 WhatsApp: ${telefono}
 📍 Departamento: ${departamento}
 🏙️ Ciudad: ${ciudad}
-🎨 Color: ${color}
 📦 Cantidad: ${cantidad} unidad(es)
 💰 Total a cobrar: $${formatPrice(total)} COP
 
 ✅ Forma de pago: Contra entrega
-📋 Producto: ${PRODUCT_NAME} (3m | hasta 11.4kg/perro)
+📋 Producto: ${PRODUCT_NAME}
 `.trim();
 }
 
