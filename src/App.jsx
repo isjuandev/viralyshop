@@ -10,7 +10,6 @@ import { OrderForm } from "./components/OrderForm";
 import { Guarantee } from "./components/Guarantee";
 import { FAQ } from "./components/FAQ";
 import { Footer } from "./components/Footer";
-import { StickyBottomBar } from "./components/StickyBottomBar";
 import { WhatsAppButton } from "./components/WhatsAppButton";
 import { ExitIntentModal } from "./components/ExitIntentModal";
 import { SalesToast } from "./components/SalesToast";
@@ -32,7 +31,6 @@ export default function App() {
           <FAQ />
         </main>
         <Footer />
-        <StickyBottomBar />
         <WhatsAppButton />
         <ExitIntentModal />
         <SalesToast />

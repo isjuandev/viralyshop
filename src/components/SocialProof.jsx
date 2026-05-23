@@ -33,7 +33,6 @@ export function SocialProof() {
   const carouselRef = useRef(null);
   const [count, setCount] = useState(0);
   const [finalCount, setFinalCount] = useState(BASE_SOCIAL_PROOF);
-  const [expanded, setExpanded] = useState({});
   const [activeReview, setActiveReview] = useState(0);
 
   useEffect(() => {
@@ -69,20 +68,35 @@ export function SocialProof() {
     if (!carousel) return;
 
     const updateActive = () => {
-      const cardWidth = carousel.firstElementChild?.getBoundingClientRect().width || 1;
-      const nextIndex = Math.round(carousel.scrollLeft / (cardWidth + 16));
-      setActiveReview(Math.min(reviews.length - 1, Math.max(0, nextIndex)));
+      const cards = Array.from(carousel.children);
+      if (!cards.length) return;
+      const center = carousel.scrollLeft + carousel.clientWidth / 2;
+      let closestIndex = 0;
+      let closestDistance = Number.POSITIVE_INFINITY;
+      cards.forEach((card, index) => {
+        const cardCenter = card.offsetLeft + card.clientWidth / 2;
+        const distance = Math.abs(cardCenter - center);
+        if (distance < closestDistance) {
+          closestDistance = distance;
+          closestIndex = index;
+        }
+      });
+      setActiveReview(closestIndex % reviews.length);
     };
 
     carousel.addEventListener("scroll", updateActive, { passive: true });
+    updateActive();
     return () => carousel.removeEventListener("scroll", updateActive);
   }, []);
 
   const scrollReview = (direction) => {
     const carousel = carouselRef.current;
     if (!carousel) return;
-    const cardWidth = carousel.firstElementChild?.getBoundingClientRect().width || carousel.clientWidth;
-    carousel.scrollBy({ left: direction * (cardWidth + 16), behavior: "smooth" });
+    const nextIndex = (activeReview + direction + reviews.length) % reviews.length;
+    const nextCard = carousel.children[nextIndex];
+    if (!nextCard) return;
+    carousel.scrollTo({ left: nextCard.offsetLeft, behavior: "smooth" });
+    setActiveReview(nextIndex);
   };
 
   return (
@@ -124,8 +138,6 @@ export function SocialProof() {
                 city={city}
                 text={text}
                 index={i}
-                expanded={expanded}
-                setExpanded={setExpanded}
                 className="min-w-[86vw] snap-center"
               />
             ))}
@@ -147,7 +159,7 @@ export function SocialProof() {
 
         <div className="mt-8 hidden gap-4 md:grid md:grid-cols-3">
           {reviews.map(([initial, name, city, text], i) => (
-            <ReviewCard key={name} initial={initial} name={name} city={city} text={text} index={i} expanded={expanded} setExpanded={setExpanded} delay={i * 100} />
+            <ReviewCard key={name} initial={initial} name={name} city={city} text={text} index={i} delay={i * 100} />
           ))}
         </div>
         <p className="mt-7 text-center text-sm text-[#374151]">
@@ -166,8 +178,6 @@ export function SocialProof() {
 }
 
 export function ReviewsBlock({ className = "" }) {
-  const [expanded, setExpanded] = useState({});
-
   return (
     <div className={`mt-4 ${className}`}>
       <div className="card-surface overflow-hidden">
@@ -190,8 +200,6 @@ export function ReviewsBlock({ className = "" }) {
                 city={city}
                 text={text}
                 index={index}
-                expanded={expanded}
-                setExpanded={setExpanded}
                 compact
               />
             ))}
@@ -204,28 +212,64 @@ export function ReviewsBlock({ className = "" }) {
 
 export function ReviewsCarousel({ className = "", cardClassName = "min-w-[86vw] snap-center md:min-w-[360px]", insetControls = false }) {
   const carouselRef = useRef(null);
-  const [expanded, setExpanded] = useState({});
-  const [activeReview, setActiveReview] = useState(0);
+  const [pageOffsets, setPageOffsets] = useState([0]);
+  const [activePage, setActivePage] = useState(0);
 
   useEffect(() => {
     const carousel = carouselRef.current;
     if (!carousel) return;
 
-    const updateActive = () => {
-      const cardWidth = carousel.firstElementChild?.getBoundingClientRect().width || 1;
-      const nextIndex = Math.round(carousel.scrollLeft / (cardWidth + 16));
-      setActiveReview(Math.min(reviews.length - 1, Math.max(0, nextIndex)));
+    const computePageOffsets = () => {
+      const maxScroll = Math.max(0, carousel.scrollWidth - carousel.clientWidth);
+      const offsets = [];
+      const cards = Array.from(carousel.children);
+      cards.forEach((card) => {
+        const raw = Math.min(maxScroll, card.offsetLeft);
+        if (!offsets.length || Math.abs(offsets[offsets.length - 1] - raw) > 8) {
+          offsets.push(raw);
+        }
+      });
+      if (!offsets.length) offsets.push(0);
+      setPageOffsets(offsets);
+      return offsets;
     };
 
+    const nearestPageIndex = (offsets) => {
+      let closest = 0;
+      let minDistance = Number.POSITIVE_INFINITY;
+      offsets.forEach((offset, index) => {
+        const distance = Math.abs(carousel.scrollLeft - offset);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closest = index;
+        }
+      });
+      return closest;
+    };
+
+    const updateActive = () => {
+      const offsets = computePageOffsets();
+      setActivePage(nearestPageIndex(offsets));
+    };
+
+    const onResize = () => updateActive();
     carousel.addEventListener("scroll", updateActive, { passive: true });
-    return () => carousel.removeEventListener("scroll", updateActive);
+    window.addEventListener("resize", onResize);
+    updateActive();
+    return () => {
+      carousel.removeEventListener("scroll", updateActive);
+      window.removeEventListener("resize", onResize);
+    };
   }, []);
 
   const scrollReview = (direction) => {
     const carousel = carouselRef.current;
     if (!carousel) return;
-    const cardWidth = carousel.firstElementChild?.getBoundingClientRect().width || carousel.clientWidth;
-    carousel.scrollBy({ left: direction * (cardWidth + 16), behavior: "smooth" });
+    const totalPages = pageOffsets.length;
+    if (!totalPages) return;
+    const nextPage = (activePage + direction + totalPages) % totalPages;
+    carousel.scrollTo({ left: pageOffsets[nextPage], behavior: "smooth" });
+    setActivePage(nextPage);
   };
 
   return (
@@ -243,8 +287,6 @@ export function ReviewsCarousel({ className = "", cardClassName = "min-w-[86vw] 
             city={city}
             text={text}
             index={index}
-            expanded={expanded}
-            setExpanded={setExpanded}
             className={cardClassName}
           />
         ))}
@@ -258,27 +300,22 @@ export function ReviewsCarousel({ className = "", cardClassName = "min-w-[86vw] 
       </button>
 
       <div className="mt-2 flex justify-center gap-2" aria-hidden="true">
-        {reviews.map(([, name], index) => (
-          <span key={name} className={`h-2 rounded-full transition-all ${activeReview === index ? "w-6 bg-[var(--color-primary)]" : "w-2 bg-[#CBD5E1]"}`} />
+        {pageOffsets.map((_, index) => (
+          <span key={`dot-${index}`} className={`h-2 rounded-full transition-all ${activePage === index ? "w-6 bg-[var(--color-primary)]" : "w-2 bg-[#CBD5E1]"}`} />
         ))}
       </div>
     </div>
   );
 }
 
-function ReviewCard({ initial, name, city, text, index, expanded, setExpanded, className = "", delay = 0, compact = false }) {
+function ReviewCard({ initial, name, city, text, index, className = "", delay = 0, compact = false }) {
   return (
     <Reveal delay={delay} className={`text-left ${className}`}>
       <article className={`card-surface card-hover h-full ${compact ? "p-3" : "p-5"}`}>
         {!compact && <img src={reviewImages[index % reviewImages.length]} alt={`Reseña de ${name}`} className="mb-4 aspect-[4/3] w-full rounded-lg object-cover" loading="lazy" />}
         <div className="flex items-center gap-3"><span className="flex size-10 items-center justify-center rounded-full bg-[var(--color-primary)] font-bold text-white">{initial}</span><div><h3 className="text-lg font-semibold">{name}</h3><p className="text-[13px] font-medium text-[var(--color-muted)]">{city}</p><span className="mt-1 inline-flex items-center gap-1 rounded bg-[var(--color-success-light)] px-2 py-0.5 text-[11px] font-bold text-[var(--color-success)]"><BadgeCheck size={14} /> Compra verificada</span></div></div>
         <div className="mt-3 flex gap-0.5">{Array.from({ length: 5 }).map((_, starIndex) => <Star key={starIndex} className="size-4 fill-[var(--color-warning)] text-[var(--color-warning)]" />)}</div>
-        <p className={`${expanded[name] ? "mt-2 text-sm leading-relaxed text-[var(--color-body)]" : "mt-2 line-clamp-2 text-sm leading-relaxed text-[var(--color-body)]"}`}>"{text}"</p>
-        {!expanded[name] && (
-          <button onClick={() => setExpanded((prev) => ({ ...prev, [name]: true }))} className="mt-1 text-sm font-semibold text-[var(--color-primary)]">
-            Leer más
-          </button>
-        )}
+        <p className="mt-2 text-sm leading-relaxed text-[var(--color-body)]">"{text}"</p>
       </article>
     </Reveal>
   );
