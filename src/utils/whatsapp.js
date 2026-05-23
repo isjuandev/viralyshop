@@ -11,7 +11,7 @@ export function buildMessage({
   total,
 }) {
   return `
-🐾 *NUEVO PEDIDO — PaseoCan*
+🐾 *NUEVO PEDIDO - PaseoCan*
 
 👤 Nombre: ${nombre}
 📱 WhatsApp: ${telefono}
@@ -22,8 +22,8 @@ export function buildMessage({
 💰 Total a cobrar: $${formatPrice(total)} COP
 
 ✅ Forma de pago: Contra entrega
-📋 Producto: ${PRODUCT_NAME} (3m · hasta 11.4kg/perro)
-`;
+📋 Producto: ${PRODUCT_NAME} (3m | hasta 11.4kg/perro)
+`.trim();
 }
 
 export function openWhatsApp(message = "") {
