@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Flashlight, Handbag, Move3D, Waypoints } from "lucide-react";
 import { Reveal } from "./Reveal";
 
-const heroVideo = "https://sqnqkv68isi215qp.private.blob.vercel-storage.com/videos/IMG_8881.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfU1FuUWtWNjhJc2kyMTVxUCIsIm93bmVySWQiOiJ0ZWFtX1FOQ1dsMzFocEFYRnp1dVhkWFhWMUp1QyIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzc5MzcyMDU3OTU0LCJpYXQiOjE3NzkzMjg4NTgwNTV9.J-1vypn4XbuPCL_3N476DbP6Ubwwiq1tfKwKiAUurPQ&vercel-blob-signature=aZsfxeaSxHv_-iqC5C7z85ihF7-1Rjb9Hrx08C6tCD8";
+const heroVideo = "https://sqnqkv68isi215qp.private.blob.vercel-storage.com/videos/IMG_8881.mp4?vercel-blob-delegation=eyJzdG9yZUlkIjoic3RvcmVfU1FuUWtWNjhJc2kyMTVxUCIsIm93bmVySWQiOiJ0ZWFtX1FOQ1dsMzFocEFYRnp1dVhkWFhWMUp1QyIsInBhdGhuYW1lIjoiKiIsIm9wZXJhdGlvbnMiOlsiZ2V0IiwiaGVhZCJdLCJ2YWxpZFVudGlsIjoxNzc5NTczMjA0NzEzLCJpYXQiOjE3Nzk1MzAwMDQ4OTh9.My8QUkm0ezt6vXta91m3REnXThBERlHQLB8I-Em982M&vercel-blob-signature=d_a0Mk4LOUGhUpW23y_lHeroxuWuC0AV9W_X4dwRguc";
 const callouts = [
   {
     text: "Anti-enredo",
