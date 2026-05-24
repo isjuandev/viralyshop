@@ -7,6 +7,7 @@ import {
   CreditCard,
   Home,
   MapPin,
+  LoaderCircle,
   Package,
   Phone,
   ShieldCheck,
@@ -14,13 +15,15 @@ import {
   User,
 } from "lucide-react";
 import { FaWhatsapp } from "react-icons/fa";
+import { PRODUCT_NAME, TENANT_ID, WHATSAPP_NUMBER } from "../constants";
 import { formatPrice } from "../utils/format";
 import {
   BUNDLE_PRICING,
   calculateDiscount,
   calculatePrice,
 } from "../utils/pricing";
-import { buildMessage, openWhatsApp } from "../utils/whatsapp";
+import { sendPreorder } from "../utils/preorder";
+import { buildMessage } from "../utils/whatsapp";
 import { Reveal } from "./Reveal";
 
 const API_BASE = "https://api-colombia.com/api/v1";
@@ -126,7 +129,7 @@ function PackCard({ pack, selected, onSelect, total, discount }) {
   );
 }
 
-function MobileTotalBar({ total, onSubmit }) {
+function MobileTotalBar({ total, onSubmit, isSubmitting }) {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 border-t border-slate-200 bg-white px-4 py-3 shadow-[0_-4px_20px_rgba(0,0,0,0.08)] lg:hidden">
       <div className="flex items-center justify-between gap-3">
@@ -134,9 +137,14 @@ function MobileTotalBar({ total, onSubmit }) {
           <p className="text-[11px] font-semibold uppercase tracking-wide text-slate-400">Total</p>
           <p className="text-[22px] font-extrabold leading-none text-slate-900">${formatPrice(total)} <span className="text-[13px] font-bold text-slate-400">COP</span></p>
         </div>
-        <button type="button" onClick={onSubmit} className="btn-whatsapp flex flex-1 items-center justify-center gap-2 py-3.5 text-[14px]">
-          <FaWhatsapp size={18} />
-          Pedir ahora
+        <button
+          type="button"
+          onClick={onSubmit}
+          disabled={isSubmitting}
+          className={`btn-whatsapp flex flex-1 items-center justify-center gap-2 py-3.5 text-[14px] ${isSubmitting ? "cursor-not-allowed opacity-80" : ""}`}
+        >
+          {isSubmitting ? <LoaderCircle size={18} className="animate-spin" /> : <FaWhatsapp size={18} />}
+          {isSubmitting ? "Enviando..." : "Pedir ahora"}
         </button>
       </div>
     </div>
@@ -163,6 +171,7 @@ export function OrderForm() {
   const [loadingDepts, setLoadingDepts] = useState(false);
   const [loadingCities, setLoadingCities] = useState(false);
   const [locationError, setLocationError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const total = useMemo(() => calculatePrice(cantidad), [cantidad]);
   const discount = useMemo(() => calculateDiscount(cantidad), [cantidad]);
@@ -217,10 +226,44 @@ export function OrderForm() {
     return Object.keys(next).length === 0;
   };
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e?.preventDefault?.();
+    if (isSubmitting) return;
     if (!validate()) return;
-    openWhatsApp(buildMessage({ ...form, color, cantidad, total }));
+    setIsSubmitting(true);
+    const message = buildMessage({ ...form, color, cantidad, total });
+    const normalizedMessage = message.replace(/\n/g, "\r\n");
+    const waUrl = `https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encodeURIComponent(normalizedMessage)}`;
+    const utmParams = new URLSearchParams(window.location.search);
+    const address = form.tipoEntrega === "domicilio"
+      ? [form.direccion, form.barrio].filter(Boolean).join(", ")
+      : undefined;
+
+    try {
+      await sendPreorder({
+        tenantId: TENANT_ID,
+        phone: form.telefono,
+        fullName: form.nombre,
+        productName: PRODUCT_NAME,
+        city: form.ciudad,
+        address: address || undefined,
+        paymentMethod: "cod",
+        source: "landing",
+        sourceRef: window.location.hostname,
+        utm: {
+          source: utmParams.get("utm_source") ?? undefined,
+          medium: utmParams.get("utm_medium") ?? undefined,
+          campaign: utmParams.get("utm_campaign") ?? undefined,
+          content: utmParams.get("utm_content") ?? undefined,
+          term: utmParams.get("utm_term") ?? undefined,
+        },
+      });
+    } catch {
+      // No bloquear conversión si falla el POST
+    } finally {
+      window.open(waUrl, "_blank", "noopener,noreferrer");
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -288,7 +331,14 @@ export function OrderForm() {
                   <span className="text-[26px] font-extrabold text-blue-700">${formatPrice(total)} <span className="text-[14px] font-bold text-slate-400">COP</span></span>
                 </div>
                 <p className="mt-3 flex items-center gap-2 text-[13px] font-bold text-slate-700"><Banknote size={16} className="text-emerald-500" /> Pago contra entrega</p>
-                <button type="submit" className="btn-whatsapp mt-4 flex w-full items-center justify-center gap-2 py-4 text-[15px] font-extrabold"><FaWhatsapp size={20} /> ENVIAR PEDIDO POR WHATSAPP</button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className={`btn-whatsapp mt-4 flex !w-full items-center justify-center gap-2 py-4 text-[15px] font-extrabold ${isSubmitting ? "cursor-not-allowed opacity-80" : ""}`}
+                >
+                  {isSubmitting ? <LoaderCircle size={20} className="animate-spin" /> : <FaWhatsapp size={20} />}
+                  {isSubmitting ? "ENVIANDO..." : "ENVIAR PEDIDO POR WHATSAPP"}
+                </button>
               </div>
 
               <div className="flex items-start gap-3 rounded-xl border border-slate-100 bg-white p-4">
@@ -305,7 +355,7 @@ export function OrderForm() {
           </form>
         </div>
       </Reveal>
-      <MobileTotalBar total={total} onSubmit={submit} />
+      <MobileTotalBar total={total} onSubmit={submit} isSubmitting={isSubmitting} />
     </section>
   );
 }
