@@ -1,4 +1,4 @@
-const API_URL = "https://nex.nexobite.com/api/v1/commerce/preorders";
+const API_URL = "https://api.nexobite.com/api/v1/commerce/preorders";
 
 export async function sendPreorder(payload) {
   const idempotencyKey = crypto.randomUUID();
