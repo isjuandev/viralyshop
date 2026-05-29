@@ -17,6 +17,7 @@ import {
 import { FaWhatsapp } from "react-icons/fa";
 import { PRODUCT_NAME, TENANT_ID, WHATSAPP_NUMBER } from "../constants";
 import { formatPrice } from "../utils/format";
+import { scrollToForm } from "../utils/scroll";
 import {
   BUNDLE_PRICING,
   calculateDiscount,
@@ -139,7 +140,10 @@ function MobileTotalBar({ total, onSubmit, isSubmitting }) {
         </div>
         <button
           type="button"
-          onClick={onSubmit}
+          onClick={() => {
+            scrollToForm();
+            onSubmit();
+          }}
           disabled={isSubmitting}
           className={`btn-whatsapp flex flex-1 items-center justify-center gap-2 py-3.5 text-[14px] ${isSubmitting ? "cursor-not-allowed opacity-80" : ""}`}
         >

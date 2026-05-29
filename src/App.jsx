@@ -31,7 +31,6 @@ export default function App() {
           <FAQ />
         </main>
         <Footer />
-        <WhatsAppButton />
         <ExitIntentModal />
         <SalesToast />
       </div>
