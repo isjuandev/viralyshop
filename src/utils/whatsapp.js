@@ -9,6 +9,7 @@ export function buildMessage({
   direccion,
   barrio,
   cedula,
+  cantidad,
 }) {
   const isOfficePickup = tipoEntrega === "oficina";
   const cityLine = `📍 *Ciudad:* ${ciudad}, ${departamento}`;
@@ -27,6 +28,7 @@ export function buildMessage({
 🙋 *Nombre:* ${nombre}
 📱 *WhatsApp:* ${telefono}
 🐾 *Producto:* ${PRODUCT_NAME}
+📦 *Cantidad:* ${cantidad} unidad${cantidad > 1 ? "es" : ""}
 ${cityLine}
 ${conditionalLines}
 💵 *Pago:* Contra entrega
